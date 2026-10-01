@@ -1,13 +1,14 @@
 AG media — obrazac za jednostrani raskid ugovora (OpenCart 3 / Basel)
 ====================================================================
 
-Verzija: 1.2.0
+Verzija: 1.2.1
 
 Namjena
 -------
 Modul dodaje javni obrazac za jednostrani raskid ugovora, pregled zahtjeva
 prije konačne potvrde, potvrdu e-poštom i zaseban administratorski popis sa
 statusima i poviješću obrade.
+U footeru se na kraju stupca „Informacije” prikazuje obična poveznica na obrazac.
 
 Kompatibilnost
 --------------
@@ -18,7 +19,7 @@ Kompatibilnost
 Instalacija / nadogradnja
 ------------------------
 1. U administraciji otvorite Extensions > Installer.
-2. Učitajte arhivu agmedia_contract_withdrawal_basel_oc3_v1.2.0.ocmod.zip.
+2. Učitajte arhivu agmedia_contract_withdrawal_basel_oc3_v1.2.1.ocmod.zip.
 3. Otvorite Extensions > Modifications i kliknite Refresh.
 4. Očistite Basel/SASS i OpenCart cache ako se novi izgled ne prikaže odmah.
 

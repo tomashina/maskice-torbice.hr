@@ -2,7 +2,7 @@
 <modification>
 	<name>Obrazac za jednostrani raskid ugovora (Basel)</name>
 	<code>dryzen_contract_withdrawal</code>
-	<version>1.2.0</version>
+	<version>1.2.1</version>
 	<author>AG media</author>
 	<link>https://www.agmedia.hr</link>
 
@@ -14,13 +14,14 @@
 
 			if (strpos((string)$this->config->get('config_language'), 'hr') === 0) {
 				$data['text_contract_withdrawal_title'] = 'Obrazac za jednostrani raskid ugovora';
-				$data['text_contract_withdrawal_copy'] = 'Pošaljite obrazac za raskid ugovora sklopljenog na daljinu.';
-				$data['text_contract_withdrawal_button'] = 'Otvori obrazac';
 			} else {
-				$data['text_contract_withdrawal_title'] = 'Contract withdrawal';
-				$data['text_contract_withdrawal_copy'] = 'Submit the form to withdraw from a distance contract.';
-				$data['text_contract_withdrawal_button'] = 'Open form';
+				$data['text_contract_withdrawal_title'] = 'Contract withdrawal form';
 			}
+
+			$data['informations'][] = array(
+				'title' => $data['text_contract_withdrawal_title'],
+				'href'  => $data['contract_withdrawal']
+			);
 				]]></add>
 		</operation>
 	</file>
@@ -35,24 +36,6 @@
 	</file>
 
 	<file path="catalog/view/theme/basel/template/common/footer.twig">
-		<operation error="abort">
-			<search><![CDATA[<div id="footer">]]></search>
-			<add position="before"><![CDATA[
-<div class="contract-withdrawal-footer-bar primary-color-border">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-8">
-        <strong class="contract-withdrawal-footer-title primary-color">{{ text_contract_withdrawal_title|e }}</strong>
-        <span class="contract-withdrawal-footer-copy">{{ text_contract_withdrawal_copy|e }}</span>
-      </div>
-      <div class="col-sm-4 text-right contract-withdrawal-footer-action">
-        <a href="{{ contract_withdrawal|e }}" class="btn btn-primary"><i class="fa fa-file-text-o"></i> {{ text_contract_withdrawal_button|e }}</a>
-      </div>
-    </div>
-  </div>
-</div>
-				]]></add>
-		</operation>
 		<operation error="skip">
 			<search><![CDATA[<li><a href="index.php?route=extension/account/contract_withdrawal">Raskid ugovora</a></li>]]></search>
 			<add position="replace"><![CDATA[]]></add>
