@@ -2,7 +2,7 @@
 <modification>
 	<name>Zakonsko jamstvo – najmanje 2 godine (Basel)</name>
 	<code>agmedia_legal_guarantee_basel_oc3</code>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<author>AG media</author>
 	<link>https://www.agmedia.hr</link>
 
@@ -21,7 +21,7 @@
 		<operation error="abort">
 			<search><![CDATA[<!-- Mandatory Theme Settings CSS -->]]></search>
 			<add position="before"><![CDATA[
-<link href="catalog/view/theme/basel/stylesheet/legal-guarantee.css?v=1.0.0" rel="stylesheet" />
+<link href="catalog/view/theme/basel/stylesheet/legal-guarantee.css?v=1.1.0" rel="stylesheet" />
 			]]></add>
 		</operation>
 	</file>
@@ -30,9 +30,9 @@
 		<operation error="abort">
 			<search><![CDATA[<div id="footer">]]></search>
 			<add position="before"><![CDATA[
-<div class="legal-guarantee-bar">
+<div class="legal-guarantee-bar primary-color-border">
   <div class="container">
-    <a class="legal-guarantee-trigger" href="{{ legal_guarantee_url }}" data-toggle="modal" data-target="#legal-guarantee-modal" aria-controls="legal-guarantee-modal" aria-haspopup="dialog">
+    <a class="legal-guarantee-trigger btn btn-primary" href="{{ legal_guarantee_url }}" data-toggle="modal" data-target="#legal-guarantee-modal" aria-controls="legal-guarantee-modal" aria-haspopup="dialog">
       <i class="fa fa-shield" aria-hidden="true"></i>
       <span>{{ text_legal_guarantee }}</span>
       <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -58,7 +58,7 @@
           </a>
         </div>
         <p class="legal-guarantee-more">
-          <a href="{{ legal_guarantee_url }}" target="_blank" rel="noopener noreferrer">{{ text_legal_guarantee_more }} <i class="fa fa-external-link" aria-hidden="true"></i></a>
+          <a class="primary-color" href="{{ legal_guarantee_url }}" target="_blank" rel="noopener noreferrer">{{ text_legal_guarantee_more }} <i class="fa fa-external-link" aria-hidden="true"></i></a>
         </p>
       </div>
     </div>
@@ -82,8 +82,8 @@
 		<operation error="skip">
 			<search><![CDATA[<div class="terms">]]></search>
 			<add position="after"><![CDATA[
-  <div class="legal-guarantee-checkout">
-    <a href="{{ legal_guarantee_url }}" data-toggle="modal" data-target="#legal-guarantee-modal" aria-controls="legal-guarantee-modal" aria-haspopup="dialog"><i class="fa fa-shield" aria-hidden="true"></i>{{ text_legal_guarantee }}</a>
+  <div class="legal-guarantee-checkout primary-color-border">
+    <a class="btn btn-primary btn-sm" href="{{ legal_guarantee_url }}" data-toggle="modal" data-target="#legal-guarantee-modal" aria-controls="legal-guarantee-modal" aria-haspopup="dialog"><i class="fa fa-shield" aria-hidden="true"></i>{{ text_legal_guarantee }}</a>
   </div>
 			]]></add>
 		</operation>
@@ -103,8 +103,8 @@
 		<operation error="skip">
 			<search><![CDATA[{% if text_agree %}]]></search>
 			<add position="before"><![CDATA[
-<div class="legal-guarantee-checkout">
-  <a href="{{ legal_guarantee_url }}" target="_blank" rel="noopener noreferrer"><i class="fa fa-shield" aria-hidden="true"></i>{{ text_legal_guarantee }}</a>
+<div class="legal-guarantee-checkout primary-color-border">
+  <a class="btn btn-primary btn-sm" href="{{ legal_guarantee_url }}" target="_blank" rel="noopener noreferrer"><i class="fa fa-shield" aria-hidden="true"></i>{{ text_legal_guarantee }}</a>
 </div>
 			]]></add>
 		</operation>
@@ -126,8 +126,8 @@
 			<search><![CDATA[</div> <!-- #product ends -->]]></search>
 			<add position="after"><![CDATA[
           <div class="product-legal-links">
-            <a class="product-legal-link" href="{{ legal_guarantee_url }}" data-toggle="modal" data-target="#legal-guarantee-modal" aria-controls="legal-guarantee-modal" aria-haspopup="dialog"><i class="fa fa-shield" aria-hidden="true"></i>{{ text_legal_guarantee }}</a>
-            <a class="product-legal-link" href="{{ withdrawal_url }}"><i class="fa fa-undo" aria-hidden="true"></i>{{ text_withdrawal_14_days }}</a>
+            <a class="product-legal-link btn btn-primary btn-sm" href="{{ legal_guarantee_url }}" data-toggle="modal" data-target="#legal-guarantee-modal" aria-controls="legal-guarantee-modal" aria-haspopup="dialog"><i class="fa fa-shield" aria-hidden="true"></i>{{ text_legal_guarantee }}</a>
+            <a class="product-legal-link btn btn-default btn-sm" href="{{ withdrawal_url }}"><i class="fa fa-undo" aria-hidden="true"></i>{{ text_withdrawal_14_days }}</a>
           </div>
 			]]></add>
 		</operation>

@@ -8,8 +8,8 @@ OUTPUT_DIR="${1:-/Users/tomek/Desktop}"
 CONTRACT_SOURCE="$SCRIPT_DIR/contract_withdrawal_basel_oc3"
 GUARANTEE_SOURCE="$SCRIPT_DIR/legal_guarantee_basel_oc3"
 
-CONTRACT_ZIP="$OUTPUT_DIR/agmedia_contract_withdrawal_basel_oc3_v1.1.0.ocmod.zip"
-GUARANTEE_ZIP="$OUTPUT_DIR/agmedia_legal_guarantee_basel_oc3_v1.0.0.ocmod.zip"
+CONTRACT_ZIP="$OUTPUT_DIR/agmedia_contract_withdrawal_basel_oc3_v1.2.0.ocmod.zip"
+GUARANTEE_ZIP="$OUTPUT_DIR/agmedia_legal_guarantee_basel_oc3_v1.1.0.ocmod.zip"
 
 WORK_DIR="$(mktemp -d "${TMPDIR:-/tmp}/agmedia-ocmod.XXXXXX")"
 trap 'rm -rf "$WORK_DIR"' EXIT

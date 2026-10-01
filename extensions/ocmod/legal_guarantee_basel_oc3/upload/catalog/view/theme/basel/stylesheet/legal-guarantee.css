@@ -1,15 +1,16 @@
 .legal-guarantee-bar {
-	background: #eef8f7;
-	border-top: 1px solid #cce9e7;
-	border-bottom: 1px solid #cce9e7;
+	background: rgba(0, 0, 0, 0.025);
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+	padding: 12px 0;
 	text-align: center;
 }
+
 .legal-guarantee-bar .legal-guarantee-trigger {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	padding: 13px 16px;
-	color: #111111;
+	padding: 10px 18px;
 	font-size: 14px;
 	font-weight: 600;
 	line-height: 1.4;
@@ -18,13 +19,13 @@
 
 .legal-guarantee-bar .legal-guarantee-trigger:hover,
 .legal-guarantee-bar .legal-guarantee-trigger:focus {
-	color: #007b77;
-	text-decoration: underline;
+	opacity: 0.86;
+	text-decoration: none;
 }
 
 .legal-guarantee-bar .fa-shield {
 	margin-right: 8px;
-	color: #00a19d;
+	color: inherit;
 	font-size: 18px;
 }
 
@@ -58,7 +59,7 @@
 }
 
 .legal-guarantee-notice-frame:focus {
-	outline: 2px solid #00a19d;
+	outline: 2px solid currentColor;
 	outline-offset: 2px;
 }
 
@@ -75,10 +76,7 @@
 	text-align: center;
 }
 
-.legal-guarantee-more a,
-.legal-guarantee-checkout a,
-.product-legal-link {
-	color: #007b77;
+.legal-guarantee-more a {
 	font-weight: 600;
 	text-decoration: underline;
 }
@@ -86,8 +84,8 @@
 .legal-guarantee-checkout {
 	margin: 0 0 12px;
 	padding: 10px 12px;
-	background: #eef8f7;
-	border: 1px solid #cce9e7;
+	background: rgba(0, 0, 0, 0.025);
+	border: 1px solid;
 	border-radius: 4px;
 	line-height: 1.4;
 	text-align: left;
@@ -96,7 +94,7 @@
 .legal-guarantee-checkout .fa,
 .product-legal-link .fa {
 	margin-right: 6px;
-	color: #00a19d;
+	color: inherit;
 }
 
 .product-legal-links {
@@ -106,23 +104,17 @@
 .product-legal-link {
 	display: inline-block;
 	margin: 0 8px 8px 0;
-	padding: 6px 10px;
-	background: #fff8e5;
-	border-radius: 10px;
-	color: #111111;
-	font-weight: 400;
 	text-decoration: none;
 }
 
 .product-legal-link:hover,
 .product-legal-link:focus {
-	color: #007b77;
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 @media (max-width: 767px) {
 	.legal-guarantee-bar .legal-guarantee-trigger {
-		padding: 11px 8px;
+		padding: 9px 12px;
 		font-size: 13px;
 	}
 

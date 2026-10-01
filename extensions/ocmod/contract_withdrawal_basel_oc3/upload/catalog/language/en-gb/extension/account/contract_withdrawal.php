@@ -1,5 +1,5 @@
 <?php
-$_['heading_title'] = 'Contract withdrawal';
+$_['heading_title'] = 'Contract withdrawal form';
 
 $_['text_account'] = 'Account';
 $_['text_intro'] = 'Use this form to submit a unilateral contract withdrawal request for an online order.';
@@ -22,6 +22,12 @@ $_['text_back_account'] = 'Back to account';
 $_['text_continue'] = 'Continue';
 $_['text_required_note'] = 'Fields marked with an asterisk are required.';
 $_['text_confirm_legal'] = 'I understand that by submitting this statement I request unilateral contract withdrawal for the specified order.';
+$_['text_load_products_help'] = 'To withdraw individual items, enter the order number and the email used for the purchase, then load the items.';
+$_['text_products_loaded'] = 'Items loaded: %d. Select the items you want to include in the withdrawal.';
+$_['text_product_model'] = 'Model';
+$_['text_product_quantity'] = 'Qty.';
+$_['text_products_no_js'] = 'If JavaScript is disabled, verify the order with this button and then select the required items.';
+$_['text_loading_products'] = 'Loading...';
 
 $_['entry_order_id'] = 'Order number';
 $_['entry_firstname'] = 'First name';
@@ -36,6 +42,7 @@ $_['entry_comment'] = 'Comment';
 $_['button_preview'] = 'Preview request';
 $_['button_confirm'] = 'Confirm contract withdrawal';
 $_['button_edit'] = 'Edit details';
+$_['button_load_products'] = 'Load items';
 
 $_['email_customer_subject'] = 'Confirmation of contract withdrawal request #%s';
 $_['email_admin_subject'] = 'New contract withdrawal request #%s';
@@ -52,3 +59,5 @@ $_['error_refund_iban'] = 'Enter a valid IBAN or leave the field empty.';
 $_['error_scope'] = 'Select at least one item or full order withdrawal.';
 $_['error_confirm'] = 'You must confirm the statement before submitting the request.';
 $_['error_security'] = 'The security check failed. Refresh the page and try again.';
+$_['error_order_lookup'] = 'The order could not be verified. Check the order number and the email used for the purchase.';
+$_['error_products_empty'] = 'There are no items available to load for this order.';

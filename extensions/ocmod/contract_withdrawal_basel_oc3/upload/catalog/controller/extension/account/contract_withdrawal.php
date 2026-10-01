@@ -15,11 +15,16 @@ class ControllerExtensionAccountContractWithdrawal extends Controller {
 
 		$order_info = $this->getMatchedOrder();
 		$order_products = $order_info ? $this->model_extension_account_contract_withdrawal->getOrderProducts($order_info['order_id']) : array();
+		$product_lookup = $this->isProductLookupRequest();
 		$preview = false;
 		$statement = '';
 		$selected_products = array();
 
-		if ($this->request->server['REQUEST_METHOD'] == 'POST' && $this->validate($order_products)) {
+		if ($product_lookup) {
+			$this->validateProductLookupRequest($order_info, $order_products);
+		}
+
+		if ($this->request->server['REQUEST_METHOD'] == 'POST' && !$product_lookup && $this->validate($order_products)) {
 			$selected_products = $this->getSelectedProducts($order_products);
 			$statement = $this->buildStatement($selected_products);
 			$preview = empty($this->request->post['confirm']);
@@ -60,6 +65,7 @@ class ControllerExtensionAccountContractWithdrawal extends Controller {
 
 		$data = $this->getCommonData();
 		$data['action'] = $this->url->link('extension/account/contract_withdrawal', '', true);
+		$data['products_url'] = $this->url->link('extension/account/contract_withdrawal/products', '', true);
 		$data['preview'] = $preview;
 		$data['statement'] = $statement;
 		$data['selected_products'] = $selected_products;
@@ -84,6 +90,73 @@ class ControllerExtensionAccountContractWithdrawal extends Controller {
 		$data['header'] = $this->load->controller('common/header');
 
 		$this->response->setOutput($this->load->view('extension/account/contract_withdrawal_form', $data));
+	}
+
+	public function products() {
+		$this->load->language('extension/account/contract_withdrawal');
+		$this->loadCroatianLanguageFallback();
+		$this->load->model('extension/account/contract_withdrawal');
+
+		$json = array(
+			'success'  => false,
+			'message'  => $this->language->get('error_order_lookup'),
+			'products' => array()
+		);
+
+		$this->response->addHeader('Content-Type: application/json; charset=utf-8');
+		$this->response->addHeader('Cache-Control: no-store, no-cache, must-revalidate, private');
+		$this->response->addHeader('X-Content-Type-Options: nosniff');
+		$this->response->addHeader('X-Robots-Tag: noindex, nofollow, noarchive');
+
+		if (!isset($this->request->server['REQUEST_METHOD']) || $this->request->server['REQUEST_METHOD'] !== 'POST') {
+			$this->response->setOutput(json_encode($json));
+			return;
+		}
+
+		$csrf_token = isset($this->request->post['csrf_token']) && is_scalar($this->request->post['csrf_token']) ? (string)$this->request->post['csrf_token'] : '';
+
+		if (!$this->isValidCsrfToken($csrf_token)) {
+			$json['message'] = $this->language->get('error_security');
+			$this->response->setOutput(json_encode($json));
+			return;
+		}
+
+		$order_id = isset($this->request->post['order_id']) ? $this->parseOrderId($this->request->post['order_id']) : 0;
+		$email = isset($this->request->post['email']) && is_scalar($this->request->post['email']) ? trim((string)$this->request->post['email']) : '';
+
+		if (!$order_id || utf8_strlen($email) > 96 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$this->response->setOutput(json_encode($json));
+			return;
+		}
+
+		$order_info = $this->findMatchedOrder($order_id, $email);
+
+		if (!$order_info) {
+			$this->response->setOutput(json_encode($json));
+			return;
+		}
+
+		$order_products = $this->model_extension_account_contract_withdrawal->getOrderProducts($order_info['order_id']);
+
+		if (!$order_products) {
+			$json['message'] = $this->language->get('error_products_empty');
+			$this->response->setOutput(json_encode($json));
+			return;
+		}
+
+		foreach ($order_products as $product) {
+			$json['products'][] = array(
+				'order_product_id' => (int)$product['order_product_id'],
+				'name'             => (string)$product['name'],
+				'model'            => (string)$product['model'],
+				'quantity'         => (int)$product['quantity']
+			);
+		}
+
+		$json['success'] = true;
+		$json['message'] = sprintf($this->language->get('text_products_loaded'), count($json['products']));
+
+		$this->response->setOutput(json_encode($json));
 	}
 
 	public function success() {
@@ -149,7 +222,12 @@ class ControllerExtensionAccountContractWithdrawal extends Controller {
 			'text_back_account',
 				'text_continue',
 				'text_required_note',
-				'text_confirm_legal',
+			'text_confirm_legal',
+			'text_load_products_help',
+			'text_products_loaded',
+			'text_product_model',
+			'text_product_quantity',
+			'text_products_no_js',
 			'entry_order_id',
 			'entry_firstname',
 			'entry_lastname',
@@ -161,7 +239,10 @@ class ControllerExtensionAccountContractWithdrawal extends Controller {
 			'entry_comment',
 			'button_preview',
 			'button_confirm',
-			'button_edit'
+			'button_edit',
+			'button_load_products',
+			'text_loading_products',
+			'error_order_lookup'
 		);
 
 		foreach ($keys as $key) {
@@ -218,9 +299,9 @@ class ControllerExtensionAccountContractWithdrawal extends Controller {
 
 	private function getMatchedOrder() {
 		if (isset($this->request->post['order_id'])) {
-			$order_id = (int)$this->request->post['order_id'];
+			$order_id = $this->parseOrderId($this->request->post['order_id']);
 		} elseif (isset($this->request->get['order_id'])) {
-			$order_id = (int)$this->request->get['order_id'];
+			$order_id = $this->parseOrderId($this->request->get['order_id']);
 		} else {
 			$order_id = 0;
 		}
@@ -229,14 +310,20 @@ class ControllerExtensionAccountContractWithdrawal extends Controller {
 			return false;
 		}
 
-		$order_info = $this->model_extension_account_contract_withdrawal->getCustomerOrder($order_id);
+		$email = isset($this->request->post['email']) && is_scalar($this->request->post['email']) ? trim((string)$this->request->post['email']) : '';
+
+		return $this->findMatchedOrder($order_id, $email);
+	}
+
+	private function findMatchedOrder($order_id, $email) {
+		$order_info = $this->model_extension_account_contract_withdrawal->getCustomerOrder((int)$order_id);
 
 		if ($order_info) {
 			return $order_info;
 		}
 
-		if (isset($this->request->post['email']) && filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
-			return $this->model_extension_account_contract_withdrawal->getOrderByEmail($order_id, $this->request->post['email']);
+		if ($email !== '' && utf8_strlen($email) <= 96 && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			return $this->model_extension_account_contract_withdrawal->getOrderByEmail((int)$order_id, $email);
 		}
 
 		return false;
@@ -254,7 +341,7 @@ class ControllerExtensionAccountContractWithdrawal extends Controller {
 		$this->request->post['refund_iban'] = $this->normalizeIban($this->request->post['refund_iban']);
 		$csrf_token = isset($this->request->post['csrf_token']) && is_string($this->request->post['csrf_token']) ? $this->request->post['csrf_token'] : '';
 		$session_csrf = isset($this->session->data['contract_withdrawal_csrf']) ? (string)$this->session->data['contract_withdrawal_csrf'] : '';
-		$csrf_valid = $csrf_token !== '' && $session_csrf !== '' && hash_equals($session_csrf, $csrf_token);
+		$csrf_valid = $this->isValidCsrfToken($csrf_token);
 
 		if (!$csrf_valid) {
 			$this->error['warning'] = $this->language->get('error_security');
@@ -304,8 +391,38 @@ class ControllerExtensionAccountContractWithdrawal extends Controller {
 			$this->request->post['withdrawal_scope'] = 'full';
 		}
 
-		if ($this->request->post['withdrawal_scope'] == 'items' && $order_products && empty($this->request->post['order_products'])) {
-			$this->error['scope'] = $this->language->get('error_scope');
+		if ($this->request->post['withdrawal_scope'] == 'items') {
+			$valid_product_ids = array();
+
+			foreach ($order_products as $product) {
+				$valid_product_ids[(string)(int)$product['order_product_id']] = true;
+			}
+
+			$requested_product_ids = isset($this->request->post['order_products']) && is_array($this->request->post['order_products']) ? $this->request->post['order_products'] : array();
+			$selected_product_ids = array();
+			$invalid_selection = false;
+
+			foreach ($requested_product_ids as $order_product_id) {
+				if (!is_scalar($order_product_id) || !preg_match('/^[1-9][0-9]{0,10}$/', (string)$order_product_id)) {
+					$invalid_selection = true;
+					continue;
+				}
+
+				$order_product_id = (string)(int)$order_product_id;
+
+				if (!isset($valid_product_ids[$order_product_id])) {
+					$invalid_selection = true;
+					continue;
+				}
+
+				$selected_product_ids[$order_product_id] = $order_product_id;
+			}
+
+			$this->request->post['order_products'] = array_values($selected_product_ids);
+
+			if (!$order_products || !$selected_product_ids || $invalid_selection) {
+				$this->error['scope'] = $this->language->get('error_scope');
+			}
 		}
 
 		if ($this->isReturnCaptchaEnabled()) {
@@ -327,6 +444,62 @@ class ControllerExtensionAccountContractWithdrawal extends Controller {
 		}
 
 		return !$this->error;
+	}
+
+	private function isProductLookupRequest() {
+		return isset($this->request->server['REQUEST_METHOD'])
+			&& $this->request->server['REQUEST_METHOD'] === 'POST'
+			&& isset($this->request->post['load_products'])
+			&& is_scalar($this->request->post['load_products'])
+			&& (string)$this->request->post['load_products'] === '1';
+	}
+
+	private function validateProductLookupRequest($order_info, $order_products) {
+		$csrf_token = isset($this->request->post['csrf_token']) && is_scalar($this->request->post['csrf_token']) ? (string)$this->request->post['csrf_token'] : '';
+		$order_id = isset($this->request->post['order_id']) ? $this->parseOrderId($this->request->post['order_id']) : 0;
+		$email = isset($this->request->post['email']) && is_scalar($this->request->post['email']) ? trim((string)$this->request->post['email']) : '';
+
+		if (!$this->isValidCsrfToken($csrf_token)) {
+			$this->error['warning'] = $this->language->get('error_security');
+		}
+
+		if (!$order_id) {
+			$this->error['order_id'] = $this->language->get('error_order_id');
+		} else {
+			$this->request->post['order_id'] = (string)$order_id;
+		}
+
+		if (utf8_strlen($email) > 96 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$this->error['email'] = $this->language->get('error_email');
+		} else {
+			$this->request->post['email'] = $email;
+		}
+
+		if (!$this->error && !$order_info) {
+			$this->error['warning'] = $this->language->get('error_order_lookup');
+		} elseif (!$this->error && !$order_products) {
+			$this->error['warning'] = $this->language->get('error_products_empty');
+		}
+	}
+
+	private function parseOrderId($order_id) {
+		if (!is_scalar($order_id)) {
+			return 0;
+		}
+
+		$order_id = trim((string)$order_id);
+
+		if (!preg_match('/^[1-9][0-9]{0,9}$/', $order_id) || (int)$order_id > 2147483647) {
+			return 0;
+		}
+
+		return (int)$order_id;
+	}
+
+	private function isValidCsrfToken($csrf_token) {
+		$session_csrf = isset($this->session->data['contract_withdrawal_csrf']) ? (string)$this->session->data['contract_withdrawal_csrf'] : '';
+
+		return $csrf_token !== '' && $session_csrf !== '' && hash_equals($session_csrf, (string)$csrf_token);
 	}
 
 	private function isReturnCaptchaEnabled() {

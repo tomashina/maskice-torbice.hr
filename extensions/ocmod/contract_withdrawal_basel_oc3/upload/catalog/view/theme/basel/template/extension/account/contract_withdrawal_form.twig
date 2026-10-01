@@ -85,7 +85,7 @@
       <p class="margin-b20">{{ text_intro|e }}</p>
       <p class="help-block">{{ text_required_note|e }}</p>
 
-      <form action="{{ action|e }}" method="post" class="form-horizontal">
+      <form action="{{ action|e }}" method="post" class="form-horizontal" id="form-contract-withdrawal" data-products-url="{{ products_url|e }}">
         <input type="hidden" name="csrf_token" value="{{ csrf_token|e }}" />
         <input type="text" name="website" value="" tabindex="-1" autocomplete="off" class="contract-withdrawal-honeypot" aria-hidden="true" />
 
@@ -152,15 +152,22 @@
             <label class="col-sm-3 control-label">{{ entry_scope|e }}</label>
             <div class="col-sm-9">
               <div class="radio">
-                <label><input type="radio" name="withdrawal_scope" value="full" {% if form.withdrawal_scope != 'items' %}checked="checked"{% endif %} /> {{ text_full_order|e }}</label>
+                <label><input type="radio" name="withdrawal_scope" value="full" id="input-withdrawal-scope-full" {% if form.withdrawal_scope != 'items' %}checked="checked"{% endif %} /> {{ text_full_order|e }}</label>
               </div>
               <div class="radio">
-                <label><input type="radio" name="withdrawal_scope" value="items" {% if form.withdrawal_scope == 'items' %}checked="checked"{% endif %} {% if not order_products %}disabled="disabled"{% endif %} /> {{ text_selected_items|e }}</label>
+                <label><input type="radio" name="withdrawal_scope" value="items" id="input-withdrawal-scope-items" {% if form.withdrawal_scope == 'items' %}checked="checked"{% endif %} {% if not order_products %}disabled="disabled"{% endif %} /> {{ text_selected_items|e }}</label>
               </div>
+              <p class="help-block">{{ text_load_products_help|e }}</p>
+              <button type="button" id="button-load-order-products" class="btn btn-primary" data-loading-text="{{ text_loading_products|e }}"><i class="fa fa-refresh"></i> {{ button_load_products|e }}</button>
+              <noscript>
+                <p class="help-block">{{ text_products_no_js|e }}</p>
+                <button type="submit" name="load_products" value="1" class="btn btn-primary"><i class="fa fa-refresh"></i> {{ button_load_products|e }}</button>
+              </noscript>
               {% if errors.scope %}<div class="text-danger">{{ errors.scope|e }}</div>{% endif %}
             </div>
           </div>
 
+          <div id="contract-withdrawal-products-result" aria-live="polite">
           {% if order_products %}
           <div class="table-responsive contract-withdrawal-products">
             <table class="table table-bordered table-hover">
@@ -168,8 +175,8 @@
                 <tr>
                   <td style="width: 40px;"></td>
                   <td>{{ text_products|e }}</td>
-                  <td>Model</td>
-                  <td class="text-right">Kol.</td>
+                  <td>{{ text_product_model|e }}</td>
+                  <td class="text-right">{{ text_product_quantity|e }}</td>
                 </tr>
               </thead>
               <tbody>
@@ -187,6 +194,7 @@
           {% else %}
           <p class="help-block">{{ text_no_products|e }}</p>
           {% endif %}
+          </div>
 
           <div class="form-group">
             <label for="input-comment" class="col-sm-3 control-label">{{ entry_comment|e }}</label>
@@ -210,4 +218,162 @@
     {{ column_right }}
   </div>
 </div>
+<script>
+(function () {
+  'use strict';
+
+  var form = document.getElementById('form-contract-withdrawal');
+
+  if (!form) {
+    return;
+  }
+
+  var button = document.getElementById('button-load-order-products');
+  var orderInput = document.getElementById('input-order-id');
+  var emailInput = document.getElementById('input-email');
+  var fullRadio = document.getElementById('input-withdrawal-scope-full');
+  var itemsRadio = document.getElementById('input-withdrawal-scope-items');
+  var result = document.getElementById('contract-withdrawal-products-result');
+  var csrfInput = form.querySelector('input[name="csrf_token"]');
+  var productsLoaded = !!result.querySelector('table');
+  var buttonContent = button.textContent;
+
+  function clearNode(node) {
+    while (node.firstChild) {
+      node.removeChild(node.firstChild);
+    }
+  }
+
+  function appendMessage(message, className) {
+    var paragraph = document.createElement('p');
+    paragraph.className = className;
+    paragraph.textContent = message;
+    result.appendChild(paragraph);
+  }
+
+  function invalidateProducts() {
+    if (!productsLoaded) {
+      return;
+    }
+
+    productsLoaded = false;
+    itemsRadio.disabled = true;
+    itemsRadio.checked = false;
+    fullRadio.checked = true;
+    clearNode(result);
+    appendMessage({{ text_no_products|json_encode|raw }}, 'help-block');
+  }
+
+  function appendCell(row, text, className) {
+    var cell = document.createElement('td');
+
+    if (className) {
+      cell.className = className;
+    }
+
+    cell.textContent = text;
+    row.appendChild(cell);
+    return cell;
+  }
+
+  function renderProducts(products, message) {
+    var wrapper = document.createElement('div');
+    var table = document.createElement('table');
+    var head = document.createElement('thead');
+    var body = document.createElement('tbody');
+    var headRow = document.createElement('tr');
+    var emptyHeading = document.createElement('td');
+
+    clearNode(result);
+    appendMessage(message, 'text-success');
+
+    wrapper.className = 'table-responsive contract-withdrawal-products';
+    table.className = 'table table-bordered table-hover';
+    emptyHeading.style.width = '40px';
+    headRow.appendChild(emptyHeading);
+    appendCell(headRow, {{ text_products|json_encode|raw }});
+    appendCell(headRow, {{ text_product_model|json_encode|raw }});
+    appendCell(headRow, {{ text_product_quantity|json_encode|raw }}, 'text-right');
+    head.appendChild(headRow);
+
+    products.forEach(function (product) {
+      var row = document.createElement('tr');
+      var checkboxCell = document.createElement('td');
+      var checkbox = document.createElement('input');
+
+      checkbox.type = 'checkbox';
+      checkbox.name = 'order_products[]';
+      checkbox.value = String(product.order_product_id);
+      checkboxCell.appendChild(checkbox);
+      row.appendChild(checkboxCell);
+      appendCell(row, String(product.name));
+      appendCell(row, String(product.model));
+      appendCell(row, String(product.quantity), 'text-right');
+      body.appendChild(row);
+    });
+
+    table.appendChild(head);
+    table.appendChild(body);
+    wrapper.appendChild(table);
+    result.appendChild(wrapper);
+
+    productsLoaded = true;
+    itemsRadio.disabled = false;
+    itemsRadio.checked = true;
+    fullRadio.checked = false;
+  }
+
+  function finishLoading() {
+    button.disabled = false;
+    button.textContent = buttonContent;
+  }
+
+  orderInput.addEventListener('input', invalidateProducts);
+  emailInput.addEventListener('input', invalidateProducts);
+
+  button.addEventListener('click', function () {
+    var xhr = new XMLHttpRequest();
+    var body = 'csrf_token=' + encodeURIComponent(csrfInput.value)
+      + '&order_id=' + encodeURIComponent(orderInput.value)
+      + '&email=' + encodeURIComponent(emailInput.value);
+
+    button.disabled = true;
+    button.textContent = button.getAttribute('data-loading-text');
+
+    xhr.open('POST', form.getAttribute('data-products-url'), true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+    xhr.onreadystatechange = function () {
+      var response;
+
+      if (xhr.readyState !== 4) {
+        return;
+      }
+
+      finishLoading();
+
+      try {
+        response = JSON.parse(xhr.responseText);
+      } catch (error) {
+        response = null;
+      }
+
+      if (!response || response.success !== true || !Array.isArray(response.products) || response.products.length === 0) {
+        productsLoaded = false;
+        itemsRadio.disabled = true;
+        itemsRadio.checked = false;
+        fullRadio.checked = true;
+        clearNode(result);
+        appendMessage(response && response.message ? String(response.message) : {{ error_order_lookup|json_encode|raw }}, 'text-danger');
+        return;
+      }
+
+      renderProducts(response.products, String(response.message));
+    };
+
+    xhr.send(body);
+  });
+}());
+</script>
 {{ footer }}

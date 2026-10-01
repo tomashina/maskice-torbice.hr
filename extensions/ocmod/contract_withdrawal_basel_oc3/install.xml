@@ -2,7 +2,7 @@
 <modification>
 	<name>Obrazac za jednostrani raskid ugovora (Basel)</name>
 	<code>dryzen_contract_withdrawal</code>
-	<version>1.1.0</version>
+	<version>1.2.0</version>
 	<author>AG media</author>
 	<link>https://www.agmedia.hr</link>
 
@@ -13,7 +13,7 @@
 			$data['contract_withdrawal'] = $this->url->link('extension/account/contract_withdrawal', '', true);
 
 			if (strpos((string)$this->config->get('config_language'), 'hr') === 0) {
-				$data['text_contract_withdrawal_title'] = 'Jednostrani raskid ugovora';
+				$data['text_contract_withdrawal_title'] = 'Obrazac za jednostrani raskid ugovora';
 				$data['text_contract_withdrawal_copy'] = 'Pošaljite obrazac za raskid ugovora sklopljenog na daljinu.';
 				$data['text_contract_withdrawal_button'] = 'Otvori obrazac';
 			} else {
@@ -29,7 +29,7 @@
 		<operation error="abort">
 			<search><![CDATA[<link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />]]></search>
 			<add position="after"><![CDATA[
-<link href="catalog/view/theme/basel/stylesheet/contract-withdrawal.css?v=1.1.0" rel="stylesheet" media="screen" />
+<link href="catalog/view/theme/basel/stylesheet/contract-withdrawal.css?v=1.2.0" rel="stylesheet" media="screen" />
 				]]></add>
 		</operation>
 	</file>
@@ -38,15 +38,15 @@
 		<operation error="abort">
 			<search><![CDATA[<div id="footer">]]></search>
 			<add position="before"><![CDATA[
-<div class="contract-withdrawal-footer-bar">
+<div class="contract-withdrawal-footer-bar primary-color-border">
   <div class="container">
     <div class="row">
       <div class="col-sm-8">
-        <strong class="contract-withdrawal-footer-title">{{ text_contract_withdrawal_title|e }}</strong>
+        <strong class="contract-withdrawal-footer-title primary-color">{{ text_contract_withdrawal_title|e }}</strong>
         <span class="contract-withdrawal-footer-copy">{{ text_contract_withdrawal_copy|e }}</span>
       </div>
       <div class="col-sm-4 text-right contract-withdrawal-footer-action">
-        <a href="{{ contract_withdrawal|e }}" class="btn btn-default"><i class="fa fa-file-text-o"></i> {{ text_contract_withdrawal_button|e }}</a>
+        <a href="{{ contract_withdrawal|e }}" class="btn btn-primary"><i class="fa fa-file-text-o"></i> {{ text_contract_withdrawal_button|e }}</a>
       </div>
     </div>
   </div>
@@ -72,7 +72,7 @@
 		<operation error="skip">
 			<search><![CDATA[        <li><a href="{{ return }}">{{ text_return }}</a></li>]]></search>
 			<add position="after"><![CDATA[
-        <li><a href="{{ contract_withdrawal }}">Raskid ugovora</a></li>
+        <li><a href="{{ contract_withdrawal }}">Obrazac za jednostrani raskid ugovora</a></li>
 			]]></add>
 		</operation>
 	</file>
@@ -96,7 +96,7 @@
 		<operation error="skip">
 			<search><![CDATA[              <a href="{{ order.view }}" class="btn btn-primary btn-sm">{{ button_view }}</a>]]></search>
 			<add position="after"><![CDATA[
-              <a href="{{ order.contract_withdrawal }}" class="btn btn-default btn-sm" data-toggle="tooltip" title="Raskid ugovora"><i class="fa fa-file-text-o"></i></a>
+              <a href="{{ order.contract_withdrawal }}" class="btn btn-default btn-sm" data-toggle="tooltip" title="Obrazac za jednostrani raskid ugovora"><i class="fa fa-file-text-o"></i></a>
 			]]></add>
 		</operation>
 	</file>
@@ -106,7 +106,7 @@
 			<search><![CDATA[      <h1 id="page-title">{{ heading_title }}</h1>]]></search>
 			<add position="after"><![CDATA[
       <div class="buttons clearfix text-right margin-b15">
-        <a href="{{ contract_withdrawal }}" class="btn btn-default"><i class="fa fa-file-text-o"></i> Raskid ugovora</a>
+        <a href="{{ contract_withdrawal }}" class="btn btn-primary"><i class="fa fa-file-text-o"></i> Obrazac za jednostrani raskid ugovora</a>
       </div>
 			]]></add>
 		</operation>

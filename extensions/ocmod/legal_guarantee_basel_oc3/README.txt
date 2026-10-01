@@ -1,5 +1,5 @@
 ZAKONSKO JAMSTVO – NAJMANJE 2 GODINE
-OpenCart 3.0.3.8 + Basel / OCMOD 1.0.0
+OpenCart 3.0.3.8 + Basel / OCMOD 1.1.0
 ============================================================
 
 Paket dodaje:
@@ -12,7 +12,7 @@ Paket dodaje:
 Instalacija:
 1. Napravite sigurnosnu kopiju datoteka i baze.
 2. Admin > Extensions > Installer: učitajte
-   agmedia_legal_guarantee_basel_oc3_v1.0.0.ocmod.zip
+   agmedia_legal_guarantee_basel_oc3_v1.1.0.ocmod.zip
 3. Admin > Extensions > Modifications: kliknite Refresh.
 4. U nadzornoj ploči očistite Theme i SASS cache ako Basel još prikazuje staru verziju.
 5. Provjerite footer, stranicu artikla, checkout i probnu potvrdu narudžbe.
