@@ -1,0 +1,11 @@
+<style>
+.kbproduct_designer.nav-tabs li a{
+    color: #00aff0;    
+}
+</style>
+<ul class="kbproduct_designer nav nav-tabs">
+    <li {% if (active == 1) %} {{ 'class="active"' }} {% endif %}><a href="{{ tab_configure_url }}"><i class="fa fa-wrench"></i> {{ tab_configure }}</a></li>
+    <li {% if (active == 2) %} {{ 'class="active"' }} {% endif %}><a href="{{ tab_fonts_url }}"><i class="fa fa-font"></i> {{ tab_fonts }}</a></li>
+    <li {% if (active == 3) %} {{ 'class="active"' }} {% endif %}><a href="{{ tab_colors_url }}"><i class="fa fa-paint-brush"></i> {{ tab_colors }}</a></li>
+    <li {% if (active == 4) %} {{ 'class="active"' }} {% endif %}><a href="{{ tab_images_url }}"><i class="fa fa-image"></i> {{ tab_images }}</a></li>
+</ul>

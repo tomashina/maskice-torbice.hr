@@ -1,0 +1,26 @@
+<div class="modal-body" style="padding: 0px !important;">
+  <iframe src="https://maps.gls-czech.cz/?find=1{{ url }}" allow="geolocation" style="border: 0; height: 600px; width: 100%; margin-bottom: -6px;"/>
+</div>  
+        <script>
+        function iframeListenerGls(event) {
+          if(event.data["event_id"] === "closeWidget" || event.data["event_id"] === "closeWidget") {
+            $('#gls-parcelshop-widget').modal('hide');
+          }
+        
+          if(event.data["event_id"] === "ps_data_handover" || event.data["event_id"] === "ps_data_handover") {
+                var ps = event.data.parcelshop;
+
+                $('#select-gls-ps strong').html(ps.detail.name +', '+ps.detail.address+', '+ps.detail.city + ' ');
+                $('#select-gls-ps span').text('{{ text_gls_ps_change }}');
+                 $.ajax({
+                     url: 'index.php?route=extension/shipping/gls_ps/saveBranchOrder',
+                     type: "POST",
+                     data: {gls_ps : ps.detail.name +', '+ps.detail.address+', '+ps.detail.city+';'+ps.detail.pclshopid},
+                     dataType: 'json'
+                 });
+                 $('input[value="gls_ps.gls_ps"]').prop( "checked", true ).trigger('change');
+                 $('#gls-parcelshop-widget').modal('hide');
+            }
+        }
+        window.addEventListener('message', iframeListenerGls)
+        </script>

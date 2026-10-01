@@ -1,0 +1,299 @@
+{% if product_accessories %}
+<div class="ci_product_accessories">
+  {% if module_ciaccessory_setting_display_title %}
+  <h3 class="heading-title access-title title module-title">{{ text_product_accessories }}</h3>
+  {% endif %}
+
+  {{ top_description }}
+
+  {% if module_ciaccessory_setting_display_layout == 'list' %}
+  <div class="table-responsive cart-info">
+  <table class="table table-bordered table-accessories">
+  
+    <tbody>
+    {% for product_accessory in product_accessories %}
+      <tr id="product-accessory{{ product_accessory.product_id }}">
+        {% if module_ciaccessory_setting_display_image %}
+        {% set image_type_class = module_ciaccessory_setting_image_type == 'circle' ? 'img-circle' : '' %}
+        <td class="{{ module_ciaccessory_setting_text_alignment }}"><a href="{{ product_accessory.href }}" title="{{ product_accessory.name }}"><img src="{{ product_accessory.thumb }}" title="{{ product_accessory.name }}" alt="{{ product_accessory.name }}" class="{{ image_type_class }}" /></a></td>
+        {% endif %}
+
+        {% if module_ciaccessory_setting_display_name %}
+        <td class="{{ module_ciaccessory_setting_text_alignment }}"><a href="{{ product_accessory.href }}" title="{{ product_accessory.name }}">{{ product_accessory.name }}</a></td>
+        {% endif %}
+
+        {% if module_ciaccessory_setting_display_price %}
+        <td class="text-center">{% if product_accessory.price %}
+        {% if not product_accessory.special %}
+          <div class="price">{{ product_accessory.price }}</div>
+        {% else %}
+          <div class="special-price">
+            <span class="old" style="text-decoration: line-through;">{{ product_accessory.price }}</span>
+            <span class="special">{{ product_accessory.special }}</span>
+          </div>
+        {% endif %}
+        {% endif %}</td>
+        {% endif %}
+
+        {% if module_ciaccessory_setting_display_qty %}
+        <td class="{{ module_ciaccessory_setting_text_alignment }}">
+          <div class="input-group ciacessory-spinner">
+            <span class="input-group-btn">
+              <button class="btn btn-default" data-dir="down"><i class="fa fa-minus"></i></button>
+            </span>
+            <input type="text" name="accessory_quantity" value="{{ product_accessory.minimum }}" size="2" class="form-control" />
+            <span class="input-group-btn">
+              <button class="btn btn-default" data-dir="up"><i class="fa fa-plus"></i></button>
+            </span>
+          </div>
+        </td>
+        {% endif %}
+
+        {% if module_ciaccessory_setting_display_button %}
+        <td class="text-right"><button type="button" data-loading-text="{{ text_loading }}" class="btn btn-primary ciaccess-button" id="ciaccess-button{{ product_accessory.product_id }}" data-product-id="{{ product_accessory.product_id }}" data-options="{{ product_accessory.total_options }}"> <i class="global-cart icon"></i> U košaricu</button></td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% endif %}
+
+  {% if module_ciaccessory_setting_display_layout == 'grid' %}
+  <ul class="list-inline product-accessories">
+    {% for product_accessory in product_accessories %}
+    <li id="product-accessory{{ product_accessory.product_id }}">
+      <div class="inner-access clearfix {{ module_ciaccessory_setting_text_alignment }}">
+        {% if module_ciaccessory_setting_display_image %}
+        {% set image_type_class = module_ciaccessory_setting_image_type == 'circle' ? 'img-circle' : '' %}
+        <div class="image">
+          <a href="{{ product_accessory.href }}" title="{{ product_accessory.name }}"><img src="{{ product_accessory.thumb }}" title="{{ product_accessory.name }}" alt="{{ product_accessory.name }}" class="{{ image_type_class }}" /></a>
+        </div>
+        {% endif %}
+
+        {% if module_ciaccessory_setting_display_name %}
+        <div class="name"><a href="{{ product_accessory.href }}" title="{{ product_accessory.name }}">{{ product_accessory.name }}</a></div>
+        {% endif %}
+
+        {% if module_ciaccessory_setting_display_model %}
+        <div class="model">{{ product_accessory.model }}</div>
+        {% endif %}
+
+
+        {% if module_ciaccessory_setting_display_price and product_accessory.price %}
+        {% if not product_accessory.special %}
+          <div class="price">{{ product_accessory.price }}</div>
+        {% else %}
+          <div class="special-price">
+            <span class="old" style="text-decoration: line-through;">{{ product_accessory.price }}</span>
+            <span class="special">{{ product_accessory.special }}</span>
+          </div>
+        {% endif %}
+        {% endif %}
+
+        {% if module_ciaccessory_setting_display_qty or module_ciaccessory_setting_display_button %}
+          {% if module_ciaccessory_setting_display_qty %}
+          <div class="input-group ciacessory-spinner">
+            <span class="input-group-btn">
+              <button class="btn btn-default" data-dir="down"><i class="fa fa-minus"></i></button>
+            </span>
+            <input type="text" name="accessory_quantity" value="{{ product_accessory.minimum }}" size="2" class="form-control" />
+            <span class="input-group-btn">
+              <button class="btn btn-default" data-dir="up"><i class="fa fa-plus"></i></button>
+            </span>
+          </div>
+          {% endif %}
+          {% if module_ciaccessory_setting_display_button %}
+          <span class="input-group text-right cart-btn">
+            <button type="button" data-loading-text="{{ text_loading }}" class=" button btn btn-primary ciaccess-button" id="ciaccess-button{{ product_accessory.product_id }}" data-product-id="{{ product_accessory.product_id }}" data-options="{{ product_accessory.total_options }}"><i class="fa fa-shopping-cart"></i> <span class="hidden-lg hidden-md">{{ button_cart }}</span></button>
+          </span>
+          {% endif %}
+        {% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <br/>
+  {{ bottom_description }}
+
+  <div id="cioptionModal" class="modal cioptionModal">
+  </div>
+  <script type="text/javascript"><!--
+  $('.ciaccess-button').on('click', function() {
+    var data_options = $(this).attr('data-options');
+    var product_id = $(this).attr('data-product-id');
+    var quantity = $('#product-accessory'+ product_id +' input[name=\'accessory_quantity\']').val();
+
+    if(data_options == '0' || data_options == '') {
+       $.ajax({
+      url: 'index.php?route=extension/basel/basel_features/add_to_cart',
+      type: 'post',
+      data: 'product_id=' + product_id + '&quantity=' + (typeof(quantity) != 'undefined' ? quantity : 1),
+      dataType: 'json',
+      
+      beforeSend: function(json) {
+      $('body').append('<span class="basel-spinner ajax-call"></span>');
+      },
+      
+      success: function(json) {
+      $('[data-toggle=\'tooltip\']').tooltip('hide');
+
+        if (json['redirect']) {
+          location = json['redirect'];
+        }
+        
+        if (json['success_redirect']) {
+          
+          location = json['success_redirect'];
+        
+        } else if (json['success']) {
+                    
+          $('.alert, .popup-note, .basel-spinner.ajax-call, .text-danger').remove();
+          html = '<div class="popup-note">';
+          html += '<div class="inner">';
+          html += '<a class="popup-note-close" onclick="$(this).parent().parent().remove()">&times;</a>';
+          html += '<div class="table">';
+          html += '<div class="table-cell v-top img"><img src="' + json['image'] + '" /></div>';
+          html += '<div class="table-cell v-top">' + json['success'] + '</div>';
+          html += '</div>';
+          html += '</div>';
+          html += '</div>';
+          $('body').append(html);
+          setTimeout(function() {$('.popup-note').hide();}, 8100);
+          // Need to set timeout otherwise it wont update the total
+          setTimeout(function () {
+          $('.cart-total-items').html( json['total_items'] );
+          $('.cart-total-amount').html( json['total_amount'] );
+          }, 100);
+
+          $('#cart-content').load('index.php?route=common/cart/info #cart-content > *');
+        }
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+      }
+    });
+    } else{
+     $.ajax({
+        url: 'index.php?route=extension/ciproduct_accessory/options',
+        type: 'post',
+        data: 'product_id=' + product_id + '&quantity=' + (typeof(quantity) != 'undefined' ? quantity : 1),
+        dataType: 'html',
+        beforeSend: function() {
+          $('#ciaccess-button'+ product_id).attr('disabled', true);
+        },
+        complete: function() {
+          $('#ciaccess-button'+ product_id).attr('disabled', false);
+        },
+        success: function(html) {
+          $('#cioptionModal').html(html);
+
+          $('#cioptionModal').modal('show');
+           /*setTimeout(function() {
+            $('#cioptionModal').appendTo("body").modal('show');
+           }, 500);  */
+        }
+      });
+    }
+  });
+  //--></script>
+  <script type="text/javascript"><!--
+  $(document).on('click', '.ciacessory-spinner button', function () {
+    var button = $(this),
+      oldValue = button.closest('.ciacessory-spinner').find('input').val().trim(),
+      newvalue = 1;
+
+    if (button.attr('data-dir') == 'up') {
+      newvalue = parseInt(oldValue) + 1;
+    } else if (button.attr('data-dir') == 'down') {
+      if (oldValue > 1) {
+        newvalue = parseInt(oldValue) - 1;
+      } else {
+        newvalue = 1;
+      }
+    }
+    button.closest('.ciacessory-spinner').find('input').val(newvalue);
+  });
+  //--></script>
+<script type="text/javascript"><!--
+  $(document).delegate('button[id^=\'button-upload-acc\']', 'click', function() {
+    var node = this;
+
+    $('#form-upload-acc').remove();
+
+    $('body').prepend('<form enctype="multipart/form-data" id="form-upload-acc" style="display: none;"><input type="file" name="file" /></form>');
+
+    $('#form-upload-acc input[name=\'file\']').trigger('click');
+
+    timer = setInterval(function() {
+      if ($('#form-upload-acc input[name=\'file\']').val() != '') {
+        clearInterval(timer);
+
+        $.ajax({
+          url: 'index.php?route=tool/upload',
+          type: 'post',
+          dataType: 'json',
+          data: new FormData($('#form-upload-acc')[0]),
+          cache: false,
+          contentType: false,
+          processData: false,
+          beforeSend: function() {
+            $(node).button('loading');
+          },
+          complete: function() {
+            $(node).button('reset');
+          },
+          success: function(json) {
+            $('.text-danger').remove();
+
+            if (json['error']) {
+              $(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+            }
+
+            if (json['success']) {
+              alert(json['success']);
+
+              $(node).parent().find('input').attr('value', json['code']);
+            }
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
+      }
+    }, 500);
+  });
+  //--></script>
+  <style type="text/css">
+  .product-accessories .inner-access{
+    background: {{ module_ciaccessory_setting_backgroundcolor }};
+  }
+  .product-accessories .name a, .product-accessories .special-price .old, .product-accessories .special, .product-accessories .price{
+    color: {{ module_ciaccessory_setting_textcolor }};
+  }
+  .product-accessories li .inner-access{
+   border-color: {{ module_ciaccessory_setting_bordercolor }};
+  }
+
+  .ciaccess-button{
+   {% if module_ciaccessory_setting_button_backgroundcolor %}
+   border: none;
+   background-image: none;
+   background: {{ module_ciaccessory_setting_button_backgroundcolor }};
+   {% endif %}
+   color: {{ module_ciaccessory_setting_button_textcolor }};
+  }
+
+  .ciaccess-button:hover{
+    border: none;
+    background-image: none;
+    background: {{ module_ciaccessory_setting_button_hover_backgroundcolor }};
+    color: {{ module_ciaccessory_setting_button_hover_textcolor }};
+  }
+
+  {{ custom_css }}
+  </style>
+</div>
+{% endif %}

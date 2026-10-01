@@ -1,0 +1,535 @@
+<div class="container-fluid">
+    {% if (product_id != 0) %} 
+   
+    {% endif %} 
+    <ul class="nav nav-tabs" style="clear: both">
+        <li class="active"><a href="#tab-config" data-toggle="tab"><i class="fa fa-gear"></i> {{ tab_configuration }} <i style="color: red;font-size: 15px;display: none" class="fa fa-exclamation-circle kbproduct-error-tab1"></i></a></li>
+        <li><a href="#tab-price" data-toggle="tab"><i class="fa fa-dollar"></i> {{ tab_price }} <i style="color: red;font-size: 15px;display: none" class="fa fa-exclamation-circle kbproduct-error-tab2"></i></a></li>
+
+        <li><a href="#tab-sides" data-toggle="tab"><i class="fa fa-bars"></i> {{ tab_sides }} <i style="color: red;font-size: 15px;display: none" class="fa fa-exclamation-circle kbproduct-error-tab4"></i></a></li>
+    </ul>
+    <div class="row">
+        <div class="col-lg-12 col-md-9">
+            <div class="tab-content">
+                <!--<input type="hidden" name="product_id" id="product_id">-->
+                <!--tab general -->
+                <div class="tab-pane active" id="tab-config"> 
+                    <div class="form-group">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="{{ text_enable_tooltip }}">
+                                {{ text_enable }} 
+                            </span>
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[config][enable]" id="status" class="form-control">
+                                {% if (kbproduct['config']['enable']) %} 
+                                    <option value="1" selected="selected">{{ text_yes }}</option>
+                                    <option value="0">{{ text_no }}</option>
+                                {% else %} 
+                                    <option value="1">{{ text_yes }}</option>
+                                    <option value="0" selected="selected">{{ text_no }}</option>
+                                {% endif %} 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="{{ text_required_pro_customization_tooltip }}">
+                                {{ text_required_pro_customization }} 
+                            </span>
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[config][required]" id="required" class="form-control">
+                                {% if (kbproduct['config']['required']) %} 
+                                    <option value="1" selected="selected">{{ text_yes }}</option>
+                                    <option value="0">{{ text_no }}</option>
+                                {% else %} 
+                                    <option value="1">{{ text_yes }}</option>
+                                    <option value="0" selected="selected">{{ text_no }}</option>
+                                {% endif %} 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="{{ text_allow_image_upload_tooltip }}">
+                                {{ text_allow_image_upload }} 
+                            </span>
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[config][allow_image_upload]" id="allow_image_upload" class="form-control">
+                                {% if (kbproduct['config']['allow_image_upload']) %} 
+                                    <option value="1" selected="selected">{{ text_yes }}</option>
+                                    <option value="0">{{ text_no }}</option>
+                                {% else %} 
+                                    <option value="1">{{ text_yes }}</option>
+                                    <option value="0" selected="selected">{{ text_no }}</option>
+                                {% endif %} 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group image-div required">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="{{ text_upload_image_size_tooltip }}">
+                                {{ text_upload_image_size }} 
+                                <p style="font-style: italic">{{ text_kb }}</p>
+                            </span>
+                        </label>  
+                        <div class="col-sm-10">
+                            <input type="text" name="kbproduct[config][image_size]" id="image_size" value="{{ kbproduct['config']['image_size'] }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group image-div required">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="{{ text_upload_image_price_tooltip }}">
+                                {{ text_upload_image_price }} 
+                            </span>
+                        </label>  
+                        <div class="col-sm-10">
+                            <input type="text" name="kbproduct[config][image_price]" id="image_price" value="{{ kbproduct['config']['image_price'] }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="{{ text_display_download_option_tooltip }}">
+                                {{ text_display_download_option }} 
+                            </span>
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[config][display_download]" id="display_download" class="form-control">
+                                {% if (kbproduct['config']['display_download']) %} 
+                                    <option value="1" selected="selected">{{ text_yes }}</option>
+                                    <option value="0">{{ text_no }}</option>
+                                {% else %} 
+                                    <option value="1">{{ text_yes }}</option>
+                                    <option value="0" selected="selected">{{ text_no }}</option>
+                                {% endif %} 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="{{ text_resize_text_tooltip }}">
+                                {{ text_resize_text }} 
+                            </span>
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[config][resize_text]" id="resize_text" class="form-control">
+                                {% if (kbproduct['config']['resize_text']) %} 
+                                    <option value="1" selected="selected">{{ text_yes }}</option>
+                                    <option value="0">{{ text_no }}</option>
+                                {% else %} 
+                                    <option value="1">{{ text_yes }}</option>
+                                    <option value="0" selected="selected">{{ text_no }}</option>
+                                {% endif %} 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="{{ text_display_rotator_tooltip }}">
+                                {{ text_display_rotator }} 
+                            </span>
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[config][display_rotator]" id="display_rotator" class="form-control">
+                                {% if (kbproduct['config']['display_rotator']) %} 
+                                    <option value="1" selected="selected">{{ text_yes }}</option>
+                                    <option value="0">{{ text_no }}</option>
+                                {% else %} 
+                                    <option value="1">{{ text_yes }}</option>
+                                    <option value="0" selected="selected">{{ text_no }}</option>
+                                {% endif %} 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group " style="display:none">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="{{ text_display_qr_code_tooltip }}">
+                                {{ text_display_qr_code }} 
+                            </span>
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[config][qr_code]" id="qr_code" class="form-control">
+                                {% if (kbproduct['config']['qr_code']) %} 
+                                    <option value="1" selected="selected">{{ text_yes }}</option>
+                                    <option value="0">{{ text_no }}</option>
+                                {% else %} 
+                                    <option value="1">{{ text_yes }}</option>
+                                    <option value="0" selected="selected">{{ text_no }}</option>
+                                {% endif %} 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="{{ text_display_image_transparency_tooltip }}">
+                                {{ text_display_image_transparency }} 
+                            </span>
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[config][image_transparency]" id="qr_code" class="form-control">
+                                {% if (kbproduct['config']['image_transparency']) %} 
+                                    <option value="1" selected="selected">{{ text_yes }}</option>
+                                    <option value="0">{{ text_no }}</option>
+                                {% else %} 
+                                    <option value="1">{{ text_yes }}</option>
+                                    <option value="0" selected="selected">{{ text_no }}</option>
+                                {% endif %} 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="{{ text_display_image_filters_tooltip }}">
+                                {{ text_display_image_filters }} 
+                            </span>
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[config][enable_image_filters]" id="enable_image_filters" class="form-control">
+                               
+                                  
+                                    <option value="1">{{ text_yes }}</option>
+                                    <option value="0" selected="selected">{{ text_no }}</option>
+                             
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group filter-div" style="display:none">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="{{ text_image_filters_tooltip }}">
+                                {{ text_image_filters }} 
+                            </span>
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[config][image_filters][]" multiple="multiple" id="image_filters" class="form-control">
+                                <option value="0" {% if ('0' in kbproduct['config']['image_filters']) %} {{ 'selected' }}{% endif %}>{{ text_grayscale }}</option>
+                                <option value="1" {% if ('1' in kbproduct['config']['image_filters']) %} {{ 'selected' }}{% endif %}>{{ text_sepia }}</option>
+                                <option value="2" {% if ('2' in kbproduct['config']['image_filters']) %} {{ 'selected' }}{% endif %}>{{ text_invert }}</option>
+                                <option value="3" {% if ('3' in kbproduct['config']['image_filters']) %} {{ 'selected' }}{% endif %}>{{ text_emboss }}</option>
+                                <option value="4" {% if ('4' in kbproduct['config']['image_filters']) %} {{ 'selected' }}{% endif %}>{{ text_sharpen }}</option>
+                                <option value="5" {% if ('5' in kbproduct['config']['image_filters']) %} {{ 'selected' }}{% endif %}>{{ text_blur }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--tab Price-->
+                <div class="tab-pane" id="tab-price">
+                    <div class="form-group required">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            {{ text_text_fixed_price }} 
+                        </label>  
+                        <div class="col-sm-10">
+                            <input type="text" name="kbproduct[price][text_price]" id="text_price" value="{{ kbproduct['price']['text_price'] }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                            {{ text_enable_cost_per_char }} 
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[price][cost_per_char]" id="cost_per_char" class="form-control">
+                                {% if (kbproduct['price']['cost_per_char']) %} 
+                                    <option value="1" selected="selected">{{ text_yes }}</option>
+                                    <option value="0">{{ text_no }}</option>
+                                {% else %} 
+                                    <option value="1">{{ text_yes }}</option>
+                                    <option value="0" selected="selected">{{ text_no }}</option>
+                                {% endif %} 
+                            </select>
+                            <p style="font: italic">{{ text_enable_cost_per_char_hint }}</p>
+                        </div>
+                    </div>
+                    <div class="form-group required">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                                {{ text_design_fixed_price }} 
+                        </label>  
+                        <div class="col-sm-10">
+                            <input type="text" name="kbproduct[price][design_price]" id="design_price" value="{{ kbproduct['price']['design_price'] }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group required">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                                {{ text_qrcode_price }} 
+                        </label>  
+                        <div class="col-sm-10">
+                            <input type="text" name="kbproduct[price][qrcode_price]" id="qrcode_price" value="{{ kbproduct['price']['qrcode_price'] }}" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-text"> 
+                    <div class="form-group">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                                {{ text_display_text_block }} 
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[text][display_text_block]" id="display_text_block" class="form-control">
+                                {% if (kbproduct['text']['display_text_block']) %} 
+                                    <option value="1" selected="selected">{{ text_yes }}</option>
+                                    <option value="0">{{ text_no }}</option>
+                                {% else %} 
+                                    <option value="1">{{ text_yes }}</option>
+                                    <option value="0" selected="selected">{{ text_no }}</option>
+                                {% endif %} 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group required">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                                {{ text_max_text_lenght }} 
+                        </label>  
+                        <div class="col-sm-10">
+                            <input type="text" name="kbproduct[text][max_len]" id="max_len" value="{{ kbproduct['text']['max_len'] }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group required">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                                {{ text_min_text_lenght }} 
+                        </label>  
+                        <div class="col-sm-10">
+                            <input type="text" name="kbproduct[text][min_len]" id="min_len" value="{{ kbproduct['text']['min_len'] }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                                {{ text_allow_text_transparency }} 
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[text][allow_transparency]" id="allow_transparency" class="form-control">
+                                {% if (kbproduct['text']['allow_transparency']) %} 
+                                    <option value="1" selected="selected">{{ text_yes }}</option>
+                                    <option value="0">{{ text_no }}</option>
+                                {% else %} 
+                                    <option value="1">{{ text_yes }}</option>
+                                    <option value="0" selected="selected">{{ text_no }}</option>
+                                {% endif %} 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">  
+                        <label class="col-sm-2 control-label" for="input-width">
+                                {{ text_allow_text_curve }} 
+                        </label>  
+                        <div class="col-sm-10">
+                            <select name="kbproduct[text][allow_curve]" id="allow_curve" class="form-control">
+                                {% if (kbproduct['text']['allow_curve']) %} 
+                                    <option value="1" selected="selected">{{ text_yes }}</option>
+                                    <option value="0">{{ text_no }}</option>
+                                {% else %} 
+                                    <option value="1">{{ text_yes }}</option>
+                                    <option value="0" selected="selected">{{ text_no }}</option>
+                                {% endif %} 
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-sides">
+                    {#BOC added for the Image Transparency Fixes by Shivam Bansal on 7-7-2021#}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-width">
+                            <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="{{ help_transparency_status }}">
+                                {{ text_transparency_status }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <select name="kbproduct[transparency_status]" id="transparency_status" class="form-control">
+                                {% if (kbproduct['transparency_status']) %} 
+                                    <option value="1" selected="selected">{{ text_non_transparent }}</option>
+                                    <option value="0">{{ text_transparent }}</option>
+                                {% else %} 
+                                    <option value="1">{{ text_non_transparent }}</option>
+                                    <option value="0" selected="selected">{{ text_transparent }}</option>
+                                {% endif %} 
+                            </select>
+                        </div>
+                    </div>
+                    {#EOC added for the Image Transparency Fixes by Shivam Bansal on 7-7-2021#}
+                    <div class="error_side_select text-danger"></div>
+                    {% for key,side in kbproduct['sides'] %} 
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a data-toggle="collapse" href="#slider_{{ key }}_collapse" class="">
+                                {% if (side['side_name'][language_id]) %}{{ side['side_name'][language_id] }}{% else %} {{ key }}{% endif %} 
+                                <i style="color: red;font-size: 15px;display: none" class="fa fa-exclamation-circle  kbproduct-error-tab{{ key }}"></i>
+                            </a>
+                        </div>
+                        <div class="panel-body collapse" id="slider_{{ key }}_collapse">
+                            <div class="form-group">  
+                                <label class="col-sm-2 control-label" for="input-width">
+                                        {{ text_enable_side }} 
+                                </label>  
+                                <div class="col-sm-10">
+                                    <select name="kbproduct[sides][{{ key }}][enable_side]" id="enable_slider" class="form-control sides-enable">
+                                        {% if (kbproduct['sides'][key]['enable_side']) %} 
+                                            <option value="1" selected="selected">{{ text_yes }}</option>
+                                            <option value="0">{{ text_no }}</option>
+                                        {% else %} 
+                                            <option value="1">{{ text_yes }}</option>
+                                            <option value="0" selected="selected">{{ text_no }}</option>
+                                        {% endif %} 
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <label class="col-sm-2 control-label">
+                                    {{ text_side_name }} 
+                                </label>
+                                <div class="col-sm-10">
+                                    <ul class="nav nav-tabs error_name_{{ key }}">
+                                        {% set i=1 %} {% for language in languages %} 
+                                            <li {% if (i == 1) %} {{ "class='active'" }}{% endif %} {% set i = i + 1 %}><a href="#tab-{{ key }}{{ language['name'] }}" data-toggle="tab">{{ language['name'] }}</a></li>
+                                        {% endfor %} 
+                                    </ul>
+                                    <div class="tab-content" style="border-right-width: 1px;padding-left: 20px">
+                                        {% set i=1 %} {% for language in languages %} 
+                                            <div {% if (i == 1) %} {{ "class='tab-pane active'" }}{% else %} {{ "class='tab-pane'" }}{% endif %} {% set i = i + 1 %} id="tab-{{ key }}{{ language['name'] }}">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <input type="text" name="kbproduct[sides][{{ key }}][side_name][{{ language['language_id'] }}]" id="name{{ key }}{{ language['language_id'] }}" class="form-control name" value="{{ kbproduct['sides'][key]['side_name'][language['language_id']] }}" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %} 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <label class="col-sm-2 control-label" for="input-status">
+                                    {{ text_side_image }} 
+                                </label>
+                                <div class="col-sm-10">
+                                    <div class="col-lg-12" id="logo-images-thumbnails">
+                                        <div>
+                                            <a href="" id="thumb-image-{{ key }}" data-toggle="image" class="img-thumbnail">
+                                                <img src="{{ image_dir_url~kbproduct['sides'][key]['side_image'] }}" style="max-width: 100px;max-height: 100px" alt="" title="" data-placeholder="placeholder" />
+                                            </a>
+                                            <input type="hidden" name="kbproduct[sides][{{ key }}][side_image]" value="{{ kbproduct['sides'][key]['side_image'] }}" id="image_{{ key }}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %} 
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<script type="text/javascript">
+if($('#allow_image_upload').val() == '1') {
+    $('.image-div').show();
+} else {
+    $('.image-div').hide();
+}
+
+if($('#enable_image_filters').val() == '1') {
+    $('.filter-div').show();
+} else {
+    $('.filter-div').hide();
+}
+
+$('#allow_image_upload').change(function() {
+    if($('#allow_image_upload').val() == '1') {
+        $('.image-div').show();
+    } else {
+        $('.image-div').hide();
+    }
+});
+
+$('#enable_image_filters').change(function() {
+    if($('#enable_image_filters').val() == '1') { 
+        $('.filter-div').show();
+    } else {
+        $('.filter-div').hide();
+    }
+});
+
+var error_image_size = '{{ error_image_size }}';
+var error_price = '{{ error_price }}';
+var error_length = '{{ error_length }}';
+var error_length_invalid = '{{ error_length_invalid }}';
+var error_name = '{{ error_name }}';
+var error_empty = '{{ error_empty }}';
+var error_image = '{{ error_image }}';
+
+{% if (errors['image_size'] is defined) %} 
+    $('.kbproduct-error-tab1').show();
+    $('#image_size').parent().parent().addClass("has-error");
+    $('#image_size').after('<div class="text-danger">' + error_image_size + '</span>');
+{% endif %} 
+{% if (errors['image_price'] is defined) %} 
+    $('.kbproduct-error-tab1').show();
+    $('#image_price').parent().parent().addClass("has-error");
+    $('#image_price').after('<div class="text-danger">' + error_price + '</span>');
+{% endif %} 
+{% if (errors['min_len'] is defined) %} 
+    $('.kbproduct-error-tab3').show();
+    $('#min_len').parent().parent().addClass("has-error");
+    $('#min_len').after('<div class="text-danger">' + error_length + '</span>');
+{% endif %} 
+{% if (errors['max_len'] is defined) %} 
+    $('.kbproduct-error-tab3').show();
+    $('#max_len').parent().parent().addClass("has-error");
+    $('#max_len').after('<div class="text-danger">' + error_length + '</span>');
+{% endif %} 
+{% if (errors['length_invalid'] is defined) %} 
+    $('.kbproduct-error-tab3').show();
+    $('#max_len').parent().parent().addClass("has-error");
+    $('#max_len').after('<div class="text-danger">' + error_length_invalid + '</span>');
+{% endif %} 
+{% if (errors['text_price'] is defined) %} 
+    $('.kbproduct-error-tab2').show();
+    $('#text_price').parent().parent().addClass("has-error");
+    $('#text_price').after('<div class="text-danger">' + error_price + '</span>');
+{% endif %} 
+{% if (errors['design_price'] is defined) %} 
+    $('.kbproduct-error-tab2').show();
+    $('#design_price').parent().parent().addClass("has-error");
+    $('#design_price').after('<div class="text-danger">' + error_price + '</span>');
+{% endif %} 
+{% if (errors['qrcode_price'] is defined) %} 
+    $('.kbproduct-error-tab2').show();
+    $('#qrcode_price').parent().parent().addClass("has-error");
+    $('#qrcode_price').after('<div class="text-danger">' + error_price + '</span>');
+{% endif %} 
+{% if (errors['image_filters'] is defined) %} 
+    $('.kbproduct-error-tab1').show();
+    $('#image_filters').parent().parent().addClass("has-error");
+    $('#image_filters').after('<div class="text-danger">' + error_empty + '</span>');
+{% endif %} 
+{% if (errors['side_name'] is defined) %} 
+ {% for key,value in errors['side_name'] %} 
+    $('.kbproduct-error-tab4').show();
+    $('.kbproduct-error-tab{{ key }}').show();
+    $('.error_name_{{ key }}').before('<div class="text-danger">' + error_name + '</span>');
+{% endfor %}{% endif %} 
+{% if (errors['side_image'] is defined) %} 
+ {% for key,value in errors['side_image'] %} 
+    $('.kbproduct-error-tab4').show();
+    $('.kbproduct-error-tab{{ key }}').show();
+    $('#image_{{ key }}').after('<div class="text-danger">' + error_image + '</span>');
+{% endfor %}{% endif %} 
+    
+$(document).ready(function(){
+    $('form').submit(function(e){
+        $('.error_side_select').html('');
+        $('.kbproduct-error-tab4').hide();
+        $('.kbproduct-error-tab').hide();
+        if($('#status').val() == '1'){
+            var flag = false;
+            $('#tab-sides').find('.sides-enable').each(function(){
+                if($(this).val() == '1'){
+                    flag = true;
+                }
+            });
+            if(flag == false){
+                e.preventDefault();
+                $('.kbproduct-error-tab4').show();
+                $('.kbproduct-error-tab').show();
+                $('.error_side_select').html('<div class="text-danger">{{ error_side_select }}</span>');
+            }
+        } 
+    }); 
+});
+</script>

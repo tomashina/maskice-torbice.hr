@@ -1,0 +1,189 @@
+@media(min-width: 768px){
+	.product-accessories li{
+	    width: 32%;
+	}
+}
+@media(max-width: 767px){
+	.product-accessories li{
+	    width: 100%;
+	}
+}
+.product-accessories{
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.product-accessories .button{
+	line-height: normal;
+	border-radius: 0;
+}
+.product-accessories .input-group .form-control {
+    display: table-cell;
+}
+.product-accessories .input-group-btn {
+    position: relative;
+    font-size: 0;
+    white-space: nowrap;
+    width: 1%;
+    display: table-cell !important;
+}
+.product-accessories li{
+	vertical-align: top;
+	margin-bottom: 10px;
+	display: inline-block;
+}
+.product-accessories li .image{
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.product-accessories li .name, .product-accessories li .model{
+font-size: 14px;
+}
+.product-accessories li .inner-access{
+border: 1px solid #ddd;
+padding: 10px;
+}
+.product-accessories .special-price .old{
+font-size: 14px;
+}
+.product-accessories .special-price .special, .product-accessories .price{
+font-size: 16px;
+}
+.product-accessories .input-group.ciacessory-spinner{
+	display: table;
+}
+.product-accessories .input-group .input-group-btn .btn, #cioptionModal .input-group .input-group-btn .btn {
+	margin-left: 0;
+}
+#cioptionModal .input-group .form-control {
+	max-width: 100%;
+}
+#cioptionModal .input-group {
+		width: 100%;
+}
+@media(min-width: 768px){
+	.product-accessories .input-group.ciacessory-spinner{
+		width: 100%;
+	}
+	.product-accessories .cart-btn{
+		width: 100%;
+	}
+	.product-accessories .cart-btn .btn{
+		width: 100%;
+		min-height: 35px;
+	}
+	.product-accessories .visible-xs {
+	    display: inline-block !important;
+	}
+}
+@media(min-width: 980px){
+	.product-accessories .input-group.ciacessory-spinner{
+		width: 70%;
+	}
+	.product-accessories .cart-btn{
+		width: 30%;
+	}
+	.product-accessories .cart-btn .btn{
+		width: 88%;
+	}
+	.product-accessories .visible-xs {
+	    display: inline-block !important;
+	}
+}
+@media(max-width: 768px){
+	.product-accessories .input-group.ciacessory-spinner{
+		width: 100%;
+	}
+	.product-accessories .cart-btn{
+		width: 100%;
+	}
+	.product-accessories .cart-btn .btn{
+		width: 100%;
+	}
+	.product-accessories .visible-xs {
+	    display: inline-block !important;
+	}
+}
+.product-accessories .input-group{
+	margin-top: 10px;
+	float: left;
+}
+
+.table-accessories .thead-default th {
+color: #464a4c;
+background-color: #eceeef;
+}
+
+.table-accessories.table-bordered > tbody > tr > td, .table-accessories.table-bordered > tbody > tr > th, .table-accessories.table-bordered > tfoot > tr > td, .table-accessories.table-bordered > tfoot > tr > th, .table-accessories.table-bordered > thead > tr > td, .table-accessories.table-bordered > thead > tr > th {
+	vertical-align: middle;
+}
+
+.table-accessories .img-circle{
+ border: 1px solid #ddd;
+}
+
+.product-accessories .img-circle{
+  border: 1px solid #ddd;
+  border-radius: 50%;
+}
+.table-accessories .img-circle{
+  border: 1px solid #ddd;
+  border-radius: 50%;
+}
+.table-accessories .input-group-btn {
+	display: table-cell !important;
+}
+.table-accessories .input-group-btn .btn{
+	border-radius: 0;
+}
+.table-accessories .input-group .form-control{
+	padding: 7.5px 8px;
+}
+#cioptionModal .product-right-info h3 {
+	background: rgb(238, 238, 238);
+	font-family: inherit;
+	padding: 5px 10px;
+	margin-bottom: 10px;
+}
+#cioptionModal .new-price {
+	font-weight: 400;
+	font-family: "Oswald";
+	font-style: normal;
+	font-size: 27px;
+	text-transform: none;
+	color: rgb(51, 55, 69);
+	margin-bottom: 10px;
+}
+#cioptionModal .old-price{
+	background-color: rgb(234, 35, 73);
+	float: left;
+	font-weight: 400;
+	font-family: "Oswald";
+	font-style: normal;
+	padding: 3px 6px;
+	font-size: 20px;
+	text-transform: none;
+	color: #fff;
+	margin-right: 10px;
+}
+#cioptionModal .input-group-btn {
+	display: table-cell !important;
+}
+#cioptionModal .input-group-btn .btn{
+	border-radius: 0;
+}
+#cioptionModal .input-group .form-control{
+	padding: 7.5px 8px;
+}
+#cioptionModal .input-group {
+	float: left;
+	/*margin-right: 15px;*/
+	margin-top: 10px;
+}
+#cioptionModal .ciaccess-button-option{
+	margin-top: 10px;
+}
+#cioptionModal .modal-content{
+	overflow: hidden;
+}

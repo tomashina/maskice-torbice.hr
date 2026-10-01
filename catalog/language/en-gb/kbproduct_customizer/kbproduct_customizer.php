@@ -1,0 +1,64 @@
+<?php
+
+$_['button_customizer'] = 'Customize';
+
+$_['text_add_qrcode'] = 'Customize';
+$_['text_upload_image'] = 'Upload Image';
+$_['text_choose_images'] = 'Choose Images';
+$_['text_text'] = 'Text';
+$_['text_image'] = 'Image';
+$_['text_color'] = 'Color';
+$_['text_entre_link_or_text'] = 'Enter website link or text';
+$_['text_upload_file'] = 'Upload File from your Computers';
+$_['text_add_qrcode'] = 'Add QR Code';
+$_['text_add_qrcode'] = 'Add QR Code';
+$_['text_transparency'] = 'Transparency';
+$_['text_grayscale'] = 'Grayscale';
+$_['text_sepia'] = 'Sepia';
+$_['text_invert'] = 'Invert';
+$_['text_emboss'] = 'Emboss';
+$_['text_sharpen'] = 'Sharpen';
+$_['text_blur'] = 'Blur';
+$_['text_entre_text_below'] = 'Enter text below';
+$_['text_add_text'] = 'Add Text';
+$_['text_back'] = 'Back';
+$_['text_edit_text_below'] = 'Edit text below';
+$_['text_font_family'] = 'Font Family';
+$_['text_font_size'] = 'Font Size';
+$_['text_line_height'] = 'Line Height';
+$_['text_curved_text'] = 'Curved Text';
+$_['text_radius'] = 'Radius';
+$_['text_spacing'] = 'Spacing';
+$_['text_font_color'] = 'Font Color';
+$_['text_font_bg_color'] = 'Font Background Color';
+$_['text_price'] = 'Price';
+$_['text_customization'] = 'Customization';
+$_['text_total'] = 'Total';
+$_['text_empty_canvas'] = 'Empty Canvas';
+$_['text_undo'] = 'Undo';
+$_['text_redo'] = 'Redo';
+$_['text_bring_to_front'] = 'Bring to Front';
+$_['text_send_to_back'] = 'Send to back';
+$_['text_delete_selected_item'] = 'Deleted selected item';
+$_['text_save_customization'] = 'Save Customization';
+$_['text_download_as_png'] = 'Download as PNG';
+$_['text_select_image_grp'] = 'Select the Image Group';
+$_['text_remove'] = 'Remove';
+$_['text_remove_obj_msg'] = 'This action will permanently remove the object. Are you sure you want to do this?';
+
+$_['text_please_wait'] = 'Please wait';
+$_['text_px'] = '(px)';
+$_['text_warning'] = 'Warning!';
+$_['text_empty_cust_conf'] = 'Are you sure to continue without customizing the one or more sides?';
+$_['text_additional_design_cost'] = 'Additional Design Cost is';
+$_['text_incl'] = 'incl.';
+$_['text_canvas_clear_mesg'] = 'Are you sure to clear canvas? This will remove all design elements you have created.';
+$_['text_cancel'] = 'Cancel';
+$_['text_ok'] = 'Ok';
+$_['text_customized_cost'] = 'The customization cost is';
+$_['text_final_cost'] = 'and the final cost is';
+
+$_['error_empty_field'] = 'Field can not be empty.';
+$_['error_maxchar_field'] = 'Field can not be greater than {%d} characters.';
+$_['error_minchar_field'] = 'Field can not be less than {%d} character(s).';
+$_['error_image_size'] = 'Uploaded file size must be less than {%d}.';

@@ -1,0 +1,318 @@
+{% if error_warning %} 
+<div class="alert alert-danger">{{ error_warning }}</div>
+{% endif %} 
+{% if shipping_methods %}
+<p>{{ text_shipping_method }}</p>
+{% if shipping %}
+<table class="table">
+  {% for key,shipping_method in shipping_methods %}
+  {% if not shipping_method.error %} 
+  {% for quote in shipping_method.quote %} 
+  <tr>
+    <td>{% if quote.code == code %} 
+      <input type="radio" name="shipping_method" value="{{ quote.code }}" id="{{ quote.code }}"  class="{{ quote.code }}" checked="checked" />
+      {% else %}   
+      <input type="radio" name="shipping_method" value="{{ quote.code }}" id="{{ quote.code }}"   class="{{ quote.code }}"/>
+      {% endif %}</td>
+    <td style="width:100%;padding-left:10px;">
+	<label for="{{ quote.code }}">
+	{% if shipping_logo[key] %} 
+	<img src="{{ shipping_logo[key] }}" alt="{{ shipping_method.title }}" title="{{ shipping_method.title }}" />
+	{% endif %}
+	{{ quote.title }} </label>
+		{% if  quote.code == 'glsshop.glsshop' %}
+		<div id="drop-parcel-shop">
+		<gls-dpm-dialog country="hr" id="test-map" filter-type="parcel-shop"></gls-dpm-dialog>
+		<button type="btn" class="btn-primary btn" style="margin:15px 0" id="btn"><i class="icon-location icon"></i> Odaberite GLS paket shop</button>
+			<div class="alert alert-info" style="padding:10px;margin-bottom:15px"> Kada kliknete na "Odaberite GLS paket shop" otvara se prozor za izbor paket shop-ova gdje želite da vam dostavimo pošiljku.
+				Nakon toga nastavite na odabir plaćanja.
+			</div>
+			<div class="alert alert-danger" style="padding:10px;margin-bottom:15px">Za preuzimanje Paketa u Paket shopu, Primatelj mora predočiti e-mail ili SMS obavijest o prispijeću Paketa.
+				Ako se plaća pouzeće , način plaćanja je isključivo gotovina
+			</div>
+			<label for="gls_ps"> Odabarano mjesto dostave</label>
+         <input type="text" name="gls_ps" class="form-control" id="glsshop" readonly />
+		</div>
+		{% endif %}
+		{% if  quote.code == 'glspaketomat.glspaketomat' %}
+			<div id="drop-parcel-paketomat">
+				<gls-dpm-dialog country="hr" id="test-map-paketomat" filter-type="parcel-locker"></gls-dpm-dialog>
+				<button type="btn" class="btn-primary btn" style="margin:15px 0" id="btnpaketomat"><i class="icon-location icon"></i> Odaberite GLS paketomat</button>
+				<div class="alert alert-info" style="padding:10px;margin-bottom:15px"> Kada kliknete na "Odaberite GLS paketomat" otvara se prozor za izbor paketomata u koji želite da vam dostavimo pošiljku.
+					Nakon toga nastavite na odabir plaćanja.
+				</div>
+				<div class="alert alert-danger" style="padding:10px;margin-bottom:15px">Za preuzimanje paketa u Paketomatu , primatelj uz broj paketa prima i jedinstveni kod od GLS-a potreban za otvaranje Paketomata . Pouzeće za pakete preuzete
+					na Paketomatu moguće je platiti isključivo karticama bankovnim POS terminalom na Paketomatu. Vrata Paketomata otvaraju se nakon unosa koda i eventualnog plaćanja pouzeća.
+				</div>
+				<label for="gls_ps"> Odabarano mjesto dostave</label>
+				<input type="text" name="gls_ps" class="form-control" id="glspaketomat" readonly />
+			</div>
+		{% endif %}
+	</td>
+    <td style="text-align: right;"><label for="{{ quote.code }}">{{ quote.text }}</label></td>
+
+  </tr>
+
+
+
+
+  {% endfor %}
+  {% else %}   
+  <tr>
+    <td colspan="3"><div class="error">{{ shipping_method.error }}</div></td>
+  </tr>
+
+
+  {% endif %}
+  {% endfor %}
+</table>
+
+
+
+{% else %}   
+  <select class="form-control" name="shipping_method">
+    {% for shipping_method in shipping_methods %} 
+      {% if not shipping_method.error %} 
+		{% for quote in shipping_method.quote %} 
+		  {% if quote.code == code %} 
+		    {% set code = quote.code %}
+			{% set exists = true %} 
+			<option value="{{ quote.code }}" selected="selected">
+		  {% else %}   
+			<option value="{{ quote.code }}">
+		  {% endif %} 
+		  {{ quote.title }}&nbsp;&nbsp;({{ quote.text }})</option>
+		{% endfor %}
+	  {% endif %}
+    {% endfor %}
+  </select><br />
+{% endif %}
+<br />
+{% endif %}
+{% if delivery and (not delivery_delivery_time or delivery_delivery_time == '1' or delivery_delivery_time == '3') %} 
+<div{{ delivery_required ? ' class="required"' }}>
+  <label class="control-label"><strong>{{ text_delivery }}</strong></label>
+  {% if delivery_delivery_time == '1' %} 
+  <input type="text" name="delivery_date" value="{{ delivery_date }}" class="form-control date" readonly="true" style="background:#ffffff;" />
+  {% else %}  
+  <input type="text" name="delivery_date" value="{{ delivery_date }}" class="form-control date" readonly="true" style="background:#ffffff;" />
+  {% endif %} 
+  {% if delivery_delivery_time == '3' %}<br />
+    <select name="delivery_time" class="form-control">{% for quickcheckout_delivery_time in delivery_times %}
+    {% if quickcheckout_delivery_time[language_id] %} 
+      {% if delivery_time == quickcheckout_delivery_time[language_id] %} 
+	  <option value="{{ quickcheckout_delivery_time[language_id] }}" selected="selected">{{ quickcheckout_delivery_time[language_id] }}</option>
+	  {% else %}   
+	  <option value="{{ quickcheckout_delivery_time[language_id] }}">{{ quickcheckout_delivery_time[language_id] }}</option>
+      {% endif %} 
+	{% endif %} 
+    {% endfor %}</select>
+  {% endif %}
+</div>
+{% elseif delivery_delivery_time and delivery_delivery_time == '2' %} 
+  <input type="text" name="delivery_date" value="" class="hide" />
+  <select name="delivery_time" class="hide"><option value=""></option></select>
+  <strong>{{ text_estimated_delivery }}</strong><br />
+  {{ estimated_delivery }}<br />
+  {{ estimated_delivery_time }} 
+{% else %}   
+  <input type="text" name="delivery_date" value="" class="hide" />
+  <select name="delivery_time" class="hide"><option value=""></option></select>
+{% endif %}
+
+<script>
+	$(document).ready(function() {
+		if ($("input[name=\'shipping_method\'][value='glsshop.glsshop']").is(':checked')) {
+			$("#drop-parcel-shop").show();
+			$("#drop-parcel-paketomat").hide();
+
+		}
+		else if ($("input[name=\'shipping_method\'][value='glspaketomat.glspaketomat']").is(':checked')) {
+			$("#drop-parcel-paketomat").show();
+			$("#drop-parcel-shop").hide();
+
+
+
+		}
+		else{
+			$("#drop-parcel-shop").hide();
+			$("#drop-parcel-paketomat").hide();
+		}
+
+	$("#shipping-method input[name=\'shipping_method\']").on('click', function(){
+		if ($(this).val() === 'glsshop.glsshop') {
+			$("#drop-parcel-shop").show(300);
+			$("#drop-parcel-paketomat").hide(200);
+
+		}
+		else if ($(this).val() === 'glspaketomat.glspaketomat') {
+			$("#drop-parcel-paketomat").show(300);
+			$("#drop-parcel-shop").hide(200);
+
+		}
+		else {
+			$("#drop-parcel-shop").hide(200);
+			$("#drop-parcel-paketomat").hide(200);
+		}
+	});
+
+	});
+</script>
+
+
+
+<script type="text/javascript"><!--
+$('#shipping-method input[name=\'shipping_method\'], #shipping-method select[name=\'shipping_method\']').on('change', function() {
+	{% if not logged %} 
+		if ($('#payment-address input[name=\'shipping_address\']:checked').val()) {
+			var post_data = $('#payment-address input[type=\'text\'], #payment-address input[type=\'checkbox\']:checked, #payment-address input[type=\'radio\']:checked, #payment-address input[type=\'hidden\'], #payment-address select, #shipping-method input[type=\'text\'], #shipping-method input[type=\'checkbox\']:checked, #shipping-method input[type=\'radio\']:checked, #shipping-method input[type=\'hidden\'], #shipping-method select, #shipping-method textarea');
+		} else {
+			var post_data = $('#shipping-address input[type=\'text\'], #shipping-address input[type=\'checkbox\']:checked, #shipping-address input[type=\'radio\']:checked, #shipping-address input[type=\'hidden\'], #shipping-address select, #shipping-method input[type=\'text\'], #shipping-method input[type=\'checkbox\']:checked, #shipping-method input[type=\'radio\']:checked, #shipping-method input[type=\'hidden\'], #shipping-method select, #shipping-method textarea');
+		}
+
+		$.ajax({
+			url: 'index.php?route=extension/quickcheckout/shipping_method/set',
+			type: 'post',
+			data: post_data,
+			dataType: 'html',
+			cache: false,
+			success: function(html) {
+				{% if cart %} 
+				loadCart();
+				$('#glsshop').val("");
+				{% endif %} 
+				
+				{% if shipping_reload %} 
+				reloadPaymentMethod();
+				{% endif %} 
+			},
+			{% if debug %} 
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+			{% endif %} 
+		});
+	{% else %}   
+		if ($('#shipping-address input[name=\'shipping_address\']:checked').val() == 'new') {
+			var url = 'index.php?route=extension/quickcheckout/shipping_method/set';
+			var post_data = $('#shipping-address input[type=\'text\'], #shipping-address input[type=\'checkbox\']:checked, #shipping-address input[type=\'radio\']:checked, #shipping-address input[type=\'hidden\'], #shipping-address select, #shipping-method input[type=\'text\'], #shipping-method input[type=\'checkbox\']:checked, #shipping-method input[type=\'radio\']:checked, #shipping-method input[type=\'hidden\'], #shipping-method select, #shipping-method textarea');
+		} else {
+			var url = 'index.php?route=extension/quickcheckout/shipping_method/set&address_id=' + $('#shipping-address select[name=\'address_id\']').val();
+			var post_data = $('#shipping-method input[type=\'text\'], #shipping-method input[type=\'checkbox\']:checked, #shipping-method input[type=\'radio\']:checked, #shipping-method input[type=\'hidden\'], #shipping-method select, #shipping-method textarea');
+		}
+		
+		$.ajax({
+			url: url,
+			type: 'post',
+			data: post_data,
+			dataType: 'html',
+			cache: false,
+			success: function(html) {
+				{% if cart %} 
+				loadCart();
+				$('#glsshop').val("");
+				$('#glspaketomat').val("");
+				{% endif %} 
+				
+				{% if shipping_reload %} 
+				if ($('#payment-address input[name=\'payment_address\']').val() == 'new') {
+					reloadPaymentMethod();
+
+				} else {
+					reloadPaymentMethodById($('#payment-address select[name=\'address_id\']').val());
+
+				}
+				{% endif %} 
+			},
+			{% if debug %} 
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+			{% endif %} 
+		});
+	{% endif %}
+});
+
+$(document).ready(function() {
+	$('#shipping-method input[name=\'shipping_method\']:checked, #shipping-method select[name=\'shipping_method\']').trigger('change');
+});
+
+{% if delivery and delivery_delivery_time == '1' %} 
+$(document).ready(function() {
+	$('input[name=\'delivery_date\']').datetimepicker({
+		format: 'YYYY-MM-DD HH:mm',
+		minDate: '{{ delivery_min }}',
+		maxDate: '{{ delivery_max }}',
+		disabledDates: [{{ delivery_unavailable }}],
+		enabledHours: [{{ hours }}],
+		ignoreReadonly: true,
+		{% if delivery_days_of_week != '' %} 
+		daysOfWeekDisabled: [{{ delivery_days_of_week }}]
+		{% endif %} 
+	});
+});
+{% elseif delivery and (delivery_delivery_time == '3' or delivery_delivery_time == '0') %} 
+	$('input[name=\'delivery_date\']').datetimepicker({
+		format: 'YYYY-MM-DD',
+		minDate: '{{ delivery_min }}',
+		maxDate: '{{ delivery_max }}',
+		disabledDates: [{{ delivery_unavailable }}],
+		ignoreReadonly: true,
+		{% if delivery_days_of_week != '' %} 
+		daysOfWeekDisabled: [{{ delivery_days_of_week }}]
+		{% endif %} 
+	});
+{% endif %}
+//--></script>
+<script>
+	var el = document.getElementById('test-map');
+	el.addEventListener('change', (e) => {
+		console.log(e.detail);
+		alert('Odabrali ste:' + e.detail.name);
+
+		document.getElementById('glsshop').value = e.detail.contact.address + ', ' + e.detail.contact.city + '_' + e.detail.id;
+		document.getElementById("glsshop").dispatchEvent(new Event('input'));
+
+		$.ajax({
+			url: 'index.php?route=extension/quickcheckout/shipping_method/saveBranchOrder',
+			type: "POST",
+			data: {gls_ps : e.detail.name +', '+e.detail.contact.address+', '+e.detail.contact.city+';'+e.detail.id},
+			dataType: 'json'
+		});
+
+
+	});
+	var btn = document.getElementById('btn');
+	btn.addEventListener('click', () => {
+		el.showModal();
+	});
+
+
+	var elp = document.getElementById('test-map-paketomat');
+	elp.addEventListener('change', (ep) => {
+		console.log(ep.detail);
+		alert('Odabrali ste:' + ep.detail.name);
+
+		document.getElementById('glspaketomat').value = ep.detail.contact.address + ', ' + ep.detail.contact.city + '_' + ep.detail.id;
+		document.getElementById("glspaketomat").dispatchEvent(new Event('input'));
+
+		$.ajax({
+			url: 'index.php?route=extension/quickcheckout/shipping_method/saveBranchOrder',
+			type: "POST",
+			data: {gls_ps : ep.detail.name +', '+ep.detail.contact.address+', '+ep.detail.contact.city+';'+ep.detail.id},
+			dataType: 'json'
+		});
+
+
+	});
+	var btnpaketomat = document.getElementById('btnpaketomat');
+	btnpaketomat.addEventListener('click', () => {
+		elp.showModal();
+	});
+
+
+
+
+
+</script>
+

@@ -1,0 +1,7 @@
+#select-gls-ps span {
+  color: #555;   
+}
+
+#select-gls-ps span:hover {
+  text-decoration: underline;
+}

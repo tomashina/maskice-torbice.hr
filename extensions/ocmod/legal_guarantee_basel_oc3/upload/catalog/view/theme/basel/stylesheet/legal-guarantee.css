@@ -1,0 +1,153 @@
+.legal-guarantee-bar {
+	background: #eef8f7;
+	border-top: 1px solid #cce9e7;
+	border-bottom: 1px solid #cce9e7;
+	text-align: center;
+}
+.legal-guarantee-bar .legal-guarantee-trigger {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 13px 16px;
+	color: #111111;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.4;
+	text-decoration: none;
+}
+
+.legal-guarantee-bar .legal-guarantee-trigger:hover,
+.legal-guarantee-bar .legal-guarantee-trigger:focus {
+	color: #007b77;
+	text-decoration: underline;
+}
+
+.legal-guarantee-bar .fa-shield {
+	margin-right: 8px;
+	color: #00a19d;
+	font-size: 18px;
+}
+
+.legal-guarantee-bar .fa-angle-right {
+	margin-left: 8px;
+}
+
+.legal-guarantee-modal .modal-dialog {
+	width: calc(100% - 30px);
+	max-width: 900px;
+}
+
+.legal-guarantee-modal .modal-header {
+	border-bottom: 1px solid #e7e7e7;
+}
+
+.legal-guarantee-modal .modal-title {
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.legal-guarantee-modal .modal-body {
+	padding: 15px;
+}
+
+.legal-guarantee-notice-frame {
+	max-height: calc(100vh - 190px);
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+	text-align: center;
+}
+
+.legal-guarantee-notice-frame:focus {
+	outline: 2px solid #00a19d;
+	outline-offset: 2px;
+}
+
+.legal-guarantee-notice-frame img {
+	display: block;
+	width: 720px;
+	max-width: 100%;
+	height: auto;
+	margin: 0 auto;
+}
+
+.legal-guarantee-more {
+	margin: 14px 0 0 !important;
+	text-align: center;
+}
+
+.legal-guarantee-more a,
+.legal-guarantee-checkout a,
+.product-legal-link {
+	color: #007b77;
+	font-weight: 600;
+	text-decoration: underline;
+}
+
+.legal-guarantee-checkout {
+	margin: 0 0 12px;
+	padding: 10px 12px;
+	background: #eef8f7;
+	border: 1px solid #cce9e7;
+	border-radius: 4px;
+	line-height: 1.4;
+	text-align: left;
+}
+
+.legal-guarantee-checkout .fa,
+.product-legal-link .fa {
+	margin-right: 6px;
+	color: #00a19d;
+}
+
+.product-legal-links {
+	margin-top: 14px;
+}
+
+.product-legal-link {
+	display: inline-block;
+	margin: 0 8px 8px 0;
+	padding: 6px 10px;
+	background: #fff8e5;
+	border-radius: 10px;
+	color: #111111;
+	font-weight: 400;
+	text-decoration: none;
+}
+
+.product-legal-link:hover,
+.product-legal-link:focus {
+	color: #007b77;
+	text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+	.legal-guarantee-bar .legal-guarantee-trigger {
+		padding: 11px 8px;
+		font-size: 13px;
+	}
+
+	.legal-guarantee-modal .modal-dialog {
+		width: auto;
+		margin: 10px;
+	}
+
+	.legal-guarantee-modal .modal-body {
+		padding: 10px;
+	}
+
+	.legal-guarantee-notice-frame {
+		max-height: calc(100vh - 170px);
+		text-align: left;
+	}
+
+	.legal-guarantee-notice-frame img {
+		width: 640px;
+		max-width: none;
+		margin: 0;
+	}
+
+	.product-legal-link {
+		display: block;
+		margin-right: 0;
+	}
+}

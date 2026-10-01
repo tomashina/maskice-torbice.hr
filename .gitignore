@@ -1,0 +1,65 @@
+# Lokalna i produkcijska konfiguracija (sadrzi pristupne podatke)
+/config.php
+/admin/config.php
+/php.ini
+/.env
+/.env.*
+!/.env.example
+/.htpasswd
+/.ftpquota
+/auth.json
+/credentials.json
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Baze, izvozi, arhive i sigurnosne kopije
+*.sql
+*.sql.gz
+*.dump
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.bak
+*.old
+*.orig
+*~
+
+# OpenCart runtime i privatni sadrzaj trgovine
+/storage/
+/system/storage/
+/image/cache/
+/image/catalog/
+/image/*inbound*
+/sitemaps/
+/upload/
+/error_log
+/**/error_log
+*.log
+
+# Direktoriji kojima upravlja hosting
+/.well-known/
+/cgi-bin/
+
+# Lokalni alati i metapodaci
+/.idea/
+/.vscode/
+**/.DS_Store
+Thumbs.db
+*.swp
+*.swo
+/.deploy.env
+/.deploy-backups/
+
+# Datoteke dobavljaca s ugradjenim kljucevima ili primjerima kljuceva
+/admin/model/extension/payment/pp_express.php
+/admin/view/javascript/clicker_ckeditor/clicker/plugins/leaflet/Installation Guide.txt
+/admin/view/javascript/clicker_ckeditor/clicker/plugins/leaflet/dialogs/leaflet.js
+/catalog/model/extension/payment/alipay.php
+/catalog/view/javascript/mpgdpr/cookieconsent/cookieconsent.js
+/catalog/view/javascript/mpgdpr/cookieconsent/cookieconsent.min.js
+/catalog/view/javascript/mpgdpr/cookieconsent/cookieconsent.unmin.js

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<name>Obrazac za jednostrani raskid ugovora (Basel)</name>
+	<code>dryzen_contract_withdrawal</code>
+	<version>1.1.0</version>
+	<author>AG media</author>
+	<link>https://www.agmedia.hr</link>
+
+	<file path="catalog/controller/common/footer.php">
+		<operation error="abort">
+			<search><![CDATA[		$data['return'] = $this->url->link('account/return/add', '', true);]]></search>
+			<add position="after"><![CDATA[
+			$data['contract_withdrawal'] = $this->url->link('extension/account/contract_withdrawal', '', true);
+
+			if (strpos((string)$this->config->get('config_language'), 'hr') === 0) {
+				$data['text_contract_withdrawal_title'] = 'Jednostrani raskid ugovora';
+				$data['text_contract_withdrawal_copy'] = 'Pošaljite obrazac za raskid ugovora sklopljenog na daljinu.';
+				$data['text_contract_withdrawal_button'] = 'Otvori obrazac';
+			} else {
+				$data['text_contract_withdrawal_title'] = 'Contract withdrawal';
+				$data['text_contract_withdrawal_copy'] = 'Submit the form to withdraw from a distance contract.';
+				$data['text_contract_withdrawal_button'] = 'Open form';
+			}
+				]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/basel/template/common/header.twig">
+		<operation error="abort">
+			<search><![CDATA[<link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />]]></search>
+			<add position="after"><![CDATA[
+<link href="catalog/view/theme/basel/stylesheet/contract-withdrawal.css?v=1.1.0" rel="stylesheet" media="screen" />
+				]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/basel/template/common/footer.twig">
+		<operation error="abort">
+			<search><![CDATA[<div id="footer">]]></search>
+			<add position="before"><![CDATA[
+<div class="contract-withdrawal-footer-bar">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <strong class="contract-withdrawal-footer-title">{{ text_contract_withdrawal_title|e }}</strong>
+        <span class="contract-withdrawal-footer-copy">{{ text_contract_withdrawal_copy|e }}</span>
+      </div>
+      <div class="col-sm-4 text-right contract-withdrawal-footer-action">
+        <a href="{{ contract_withdrawal|e }}" class="btn btn-default"><i class="fa fa-file-text-o"></i> {{ text_contract_withdrawal_button|e }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[<li><a href="index.php?route=extension/account/contract_withdrawal">Raskid ugovora</a></li>]]></search>
+			<add position="replace"><![CDATA[]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/account/account.php">
+		<operation error="skip">
+			<search><![CDATA[		$data['return'] = $this->url->link('account/return', '', true);]]></search>
+			<add position="after"><![CDATA[
+		$data['contract_withdrawal'] = $this->url->link('extension/account/contract_withdrawal', '', true);
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/basel/template/account/account.twig">
+		<operation error="skip">
+			<search><![CDATA[        <li><a href="{{ return }}">{{ text_return }}</a></li>]]></search>
+			<add position="after"><![CDATA[
+        <li><a href="{{ contract_withdrawal }}">Raskid ugovora</a></li>
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/account/order.php">
+		<operation error="skip">
+			<search><![CDATA[				'view'       => $this->url->link('account/order/info', 'order_id=' . $result['order_id'], true),]]></search>
+			<add position="after"><![CDATA[
+				'contract_withdrawal' => $this->url->link('extension/account/contract_withdrawal', 'order_id=' . $result['order_id'], true),
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[			$data['order_id'] = (int)$this->request->get['order_id'];]]></search>
+			<add position="after"><![CDATA[
+			$data['contract_withdrawal'] = $this->url->link('extension/account/contract_withdrawal', 'order_id=' . (int)$this->request->get['order_id'], true);
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/basel/template/account/order_list.twig">
+		<operation error="skip">
+			<search><![CDATA[              <a href="{{ order.view }}" class="btn btn-primary btn-sm">{{ button_view }}</a>]]></search>
+			<add position="after"><![CDATA[
+              <a href="{{ order.contract_withdrawal }}" class="btn btn-default btn-sm" data-toggle="tooltip" title="Raskid ugovora"><i class="fa fa-file-text-o"></i></a>
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/basel/template/account/order_info.twig">
+		<operation error="skip">
+			<search><![CDATA[      <h1 id="page-title">{{ heading_title }}</h1>]]></search>
+			<add position="after"><![CDATA[
+      <div class="buttons clearfix text-right margin-b15">
+        <a href="{{ contract_withdrawal }}" class="btn btn-default"><i class="fa fa-file-text-o"></i> Raskid ugovora</a>
+      </div>
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="admin/controller/common/column_left.php">
+		<operation error="skip">
+			<search><![CDATA[			// Voucher]]></search>
+			<add position="before"><![CDATA[
+
+			if ($this->user->hasPermission('access', 'extension/sale/contract_withdrawal') || $this->user->hasPermission('access', 'sale/return')) {
+				$sale[] = array(
+					'name'	   => 'Raskidi ugovora',
+					'href'     => $this->url->link('extension/sale/contract_withdrawal', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="admin/controller/startup/permission.php">
+		<operation error="skip">
+			<search><![CDATA[			if (!in_array($route, $ignore) && !$this->user->hasPermission('access', $route)) {]]></search>
+			<add position="before"><![CDATA[
+			if (isset($part[0], $part[1], $part[2]) && $part[0] == 'extension' && $part[1] == 'sale' && $part[2] == 'contract_withdrawal' && ($this->user->hasPermission('access', 'extension/sale/contract_withdrawal') || $this->user->hasPermission('access', 'sale/return'))) {
+				return;
+			}
+
+			]]></add>
+		</operation>
+	</file>
+</modification>

@@ -1,0 +1,79 @@
+{{ header }}{{ column_left }} 
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+            </div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %} 
+                    <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+                {% endfor %} 
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if (success is defined) %} 
+            <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }} 
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %} 
+        <div id="error_message"></div>
+        {% if (error_warning is defined) %} 
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %} 
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ text_enable_disable_images }}</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <td class="text-left" style="width: 60px">
+                            {% if (sort == 'id') %} 
+                                <a href="{{ sort_id }}">{{ text_id }}</a>
+                            {% else %} 
+                                <a href="{{ sort_id }}">{{ text_id }}</a>
+                            {% endif %} 
+                        </td>
+                        <th style="text-align: left">{{ text_preview }}</th>
+                        <td  style="width: 70px" class="text-center">
+                            {% if (sort == 'status') %} 
+                                <a href="{{ sort_status }}">{{ text_active }}</a>
+                            {% else %} 
+                                <a href="{{ sort_status }}">{{ text_active }}</a>
+                            {% endif %} 
+                        </td>
+                    </thead>
+                    <tbody>
+                        {% for key,value in groups_data %} 
+                            <tr>
+                                <td>{{ value['id'] }}</td>
+                                <td style="text-align: left"><img src="{{ value['preview'] }}" style="width: auto; height:50px" class="img-thumbnail"></td>
+                                <td style="text-align: center">
+                                    {% if (value['status']) %} 
+                                        <a href="{{ action }}&product_id={{ product_id }}&image_id={{ value['id'] }}&group_id={{ group_id }}">
+                                            <i style='color:green;font-size: 14px' title="{{ text_enabled }}" class='fa fa-check'></i>
+                                        </a>
+                                    {% else %} 
+                                        <a href="{{ action }}&product_id={{ product_id }}&image_id={{ value['id'] }}&group_id={{ group_id }}">
+                                            <i style='color:red;font-size: 14px' title="{{ text_disabled }}" class='fa fa-close'></i>
+                                        </a>
+                                    {% endif %} 
+                                </td>
+                            </tr>
+                        {% endfor %} 
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-6 text-left">{{ pagination }}</div>
+                    <div class="col-sm-6 text-right">{{ results }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ footer }} 

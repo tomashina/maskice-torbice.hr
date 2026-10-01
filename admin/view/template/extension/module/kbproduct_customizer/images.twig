@@ -1,0 +1,84 @@
+{{ header }}{{ column_left }} 
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="{{ editImage_url ~ '&is_add=1&group_id=' ~ group_id }}" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+            </div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %} 
+                    <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+                {% endfor %} 
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if (success is defined) %} 
+            <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }} 
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %} 
+        <div id="error_message"></div>
+        {% if (error_warning is defined) %} 
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %} 
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ store_switcher }} 
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                {{ tabs }} 
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <td class="text-left" style="width: 50px">
+                            {% if (sort == 'id') %} 
+                                <a href="{{ sort_id }}" class="{{ order }}">{{ text_id }}</a>
+                            {% else %} 
+                                <a href="{{ sort_id }}">{{ text_id }}</a>
+                            {% endif %} 
+                        </td>
+                        <th style="text-align: left">{{ text_preview }}</th>
+                        <td class="text-center" style="width: 125px">
+                            {% if (sort == 'status') %} 
+                                <a href="{{ sort_status }}" class="{{ order }}">{{ text_active }}</a>
+                            {% else %} 
+                                <a href="{{ sort_status }}">{{ text_active }}</a>
+                            {% endif %} 
+                        </td>
+                        <td class="text-center" style="width: 125px">
+                            {% if (sort == 'date_add') %} 
+                            <a href="{{ sort_date_add }}" class="{{ order }}">{{ text_date_add }}</a>
+                            {% else %} 
+                            <a href="{{ sort_date_add }}">{{ text_date_add }}</a>
+                            {% endif %} 
+                        </td>
+                        <th style="text-align: right; width: 120px">{{ text_action }}</th>
+                    </thead>
+                    <tbody>
+                        {% for key,value in groups_data %} 
+                            <tr>
+                                <td>{{ value['id'] }}</td>
+                                <td style="text-align: left"><img src="{{ value['preview'] }}" style="height: 50px; width: auto" class="img-thumbnail"></td>
+                                <td style="text-align: center">{{ value['status_text'] }}</td>
+                                <td  style="text-align: center">{{ value['date_add'] }}</td>
+                                <td style="text-align: right">
+                                    <a href="{{ editImage_url ~ '&image_id=' ~ value['id'] ~ '&group_id=' ~ group_id }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                                    <a href="{{ deleteImage_url ~ '&id=' ~ value['id'] ~ '&group_id=' ~ group_id }}" onclick="return confirm('{{ text_are_you_sure }}')" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %} 
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-6 text-left">{{ pagination }}</div>
+                    <div class="col-sm-6 text-right">{{ results }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ footer }} 

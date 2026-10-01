@@ -1,0 +1,435 @@
+<div id="kbpc-container-popover" style="left: 0%; display: none;">
+    <link href="catalog/view/javascript/kbproduct_customizer/css/kb_front.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .kbpc-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            z-index: 999999;
+            font-size: 30px;
+            color: #000;
+            font-weight: 100;
+        }
+    </style>
+    <style type="text/css">
+        {% for key,value in fonts %} 
+ {{ value['font_url'] }}
+ {% endfor %} 
+    </style>
+    <div class="kbcustomizer-loder loading-mask" data-role="loader" style="display: none;">
+        <div class="popup popup-loading">
+        </div>
+    </div>
+    <style>
+        .loading-mask {
+            background: rgba(255,255,255,0.4);
+            bottom: 0;
+            left: 0;
+            position: fixed;
+            right: 0;
+            top: 0;
+            z-index: 2003;
+        }
+        .popup-loading {
+            /*background: rgba(255,255,255,0.8);*/
+            border-color: #ef672f;
+            color: #ef672f;
+            font-size: 14px;
+            font-weight: bold;
+            left: 50%;
+            margin-left: -100px;
+            /*padding: 100px 0 10px;*/
+            position: fixed;
+            text-align: center;
+            top: 40%;
+            width: 200px;
+            z-index: 999999;
+        }
+    </style>
+    <div id="velsof_wheel_model"></div>
+    <div id="kbcm-container-block">
+        <div id="product-container" style="background-color:#fff">
+            <!--<input type="hidden" name="token" value="d8bdd993752f9ca0acb143fe64c40ff5" />-->
+            <input type="hidden" name="id_product" value="{{ product_id }}" id="product_page_product_id" />
+            <input type="hidden" name="add" value="1" />
+            <input type="hidden" name="transparency" id ="transparency" value="{{ settings['transparency_status'] }}" /> {#Line added for the image transparency fixes by Shivam Bansal on 7-7-2021#}
+            <input type="hidden" name="id_product_attribute" id="idCombination" value="{{ product_attribute_id }}" />
+            <div class="container">
+                <a class="kbpc-close-btn" style="cursor: pointer"><i class=" fa fa-close"></i></a>
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div id="product-feature" class="tabing">
+
+                               <h3>Dizajniraj svoju maskicu</h3>
+                              <p> Prenesi sliku -> Pozicioniraj i razvuci sliku (simbolično) -> Spremi prilagodbu –> Dovrši narudžbu.</p>
+                                            <p class="hidden-xs">Eventualne napomene napišite u postupku narudžbe.</p>  
+
+                                        <p class="hidden-xs"><strong>NAPOMENA:</strong> Naši stručni suradnici napravit će grafičku pripremu. Po potrebi urediti sliku i postaviti je na maskicu u najboljoj poziciji prema vašim uputama. Po potrebi kontaktirat će vas naša služba za korisnike.</p><p class="hidden-xs"> NE RADIMO kao drugi da sami u potpunosti kreirate slike na maskicama, jer naši stručnjaci  vrše grafičku pripremu i print.</p>
+                                  <p class="hidden-xs">Svaka narudžba biti će autorizirana telefonskim putem.</p>
+                      
+                            <div class="tab-content">
+                             
+                                <div id="home" class="tab-pane fade in active{% if settings['transparency_status'] == 1 %} active {% endif %}">
+                                    <div class="tab-home-block clearfix">
+                                        <ul class="" style="text-align: center;">
+                                          
+                                            {% if (settings['allow_img_upload']) %} 
+                                            <li class="active col-lg-12">
+                                                <div>
+                                                    <a data-toggle="pill" href="#kbupload" onclick="kb_tab_change($(this))"><i class="fa fa-upload"></i> <span>{{ text_upload_image }}</span></a>
+                                                </div>
+                                            </li>
+                                            {% endif %} 
+                                         
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content">
+                                        <div id="kbimages" class="tab-pane fade active in">
+                                            <div class="image-group-type clearfix">
+                                                <ul>
+                                                    {% for key,group in groups %} 
+                                                    <li style="clear: right" class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                                        <div>
+                                                            <a data-toggle="pill" data-value="{{ group['id_groups'] }}" href="#img-grp-{{ group['id_groups'] }}" onclick="displayImageGroup($(this));">
+                                                                <div class="kbgroup-icon" style="background-image: url('{{ image_dir~'image/'~group['preview'] }}');"></div>
+                                                                <span>{{ group['name'][language_id] }}</span>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    {% endfor %} 
+                                                </ul>
+                                            </div>
+                                            <div class="tab-content">
+                                                <div class="tab-images-block" style="display: none;">
+                                                    <span class="kbpc-back-to-imggroup"><i class="fa fa-angle-left"></i> &nbsp;{{ text_back }}</span>
+                                                    <div class="kbpc-images-clips">
+                                                        <div class="">
+                                                            <p>{{ text_select_image_grp }}</p>
+                                                            <div class="mad-select">
+                                                                <ul>
+                                                                    {% set count = 0 %} {% for key,group in groups %} 
+                                                                    <li data-value="{{ group['id_groups'] }}" class="{% if (count == 0) %} {{ 'selected' }}{% endif %}">{{ group['name'][language_id] }}</li>
+                                                                    {% set count = count + 1 %}{% endfor %} 
+                                                                </ul>
+                                                                <input type="hidden" name="myOptions" id="kb-img-grp-value" value="1">
+                                                                <i class="fa fa-angle-down"></i>
+                                                                <ul class="mad-select-drop">
+                                                                    {% set count = 0 %} {% for key,group in groups %} 
+                                                                    <li data-value="{{ group['id_groups'] }}" class="{% if (count == 0) %} {{ 'selected' }}{% endif %}">{{ group['name'][language_id] }}</li>
+                                                                    {% set count = count + 1 %}{% endfor %} 
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-group-img-display" style="display: none;">
+                                                        <ul>
+                                                            {% for key,image in images %} 
+                                                            <li data-groupimg="{{ image['id_group'] }}">
+                                                                <a href="javascript:void(0);">
+                                                                    <img data-img="{{ image_dir~'image/'~image['image'] }}?rand=1562909359" data-price="{{ image['price'] }}" width="120px;" class="kb-img-pc-addproduct" src="{{ image_dir~'image/'~image['image'] }}?rand=1562909359">
+                                                                </a>
+                                                                <span>{{ image['price'] }}</span>
+                                                            </li>
+                                                            {% endfor %} 
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if (settings['allow_img_upload']) %} 
+                                        <div id="kbupload" class="upload-custom-image tab-pane fade in">
+                                            <h4>{{ text_upload_file }}</h4>
+                                            <input type="file" id="kb_pc_files" name="kb_pc_files[]">
+                                            <input type="hidden" name="kb-file-upload-cost">
+                                        </div>
+                                        {% endif %} 
+                                        {% if (settings['enable_qrcode']) %} 
+                                        <div id="kbqrcode" class="add-kb-qrcode tab-pane fade in">
+                                            <div class="form-group">
+                                                <label>{{ text_entre_link_or_text }}</label>
+                                                <input name="kb-qrcode-input" id="upload-qr-text" type="text" required="">
+                                            </div>
+                                            <button type="submit" name="kb-add-qrcode-btn" class="kb-add-qrcode-product btn btn-primary pull-right">
+                                                {{ text_add_qrcode }}
+                                            </button>
+                                        </div>
+                                        {% endif %} 
+                                        <!--Image editing options-->
+                                        
+                                    </div>
+                                </div>
+                                <div id="menu1" class="tab-pane fade in">
+                                    <div class="tab-content">
+                                        <div class="upload-custom-text">
+                                            <label>{{ text_entre_text_below }}</label>
+                                            <textarea id="uploaded-text" type="text" required=""></textarea>
+                                            <button type="submit" name="kb-add-text-btn" class="text-upload-btn btn btn-primary pull-right">
+                                                {{ text_add_text }}
+                                            </button>	
+                                        </div>
+                                        <!--text editing options-->
+                                        <div class="custom-text-editing">
+                                            <div class="close-edit-circle">
+                                                <i class="icon-menu-left" role="button" tabindex="0"><i class="fa fa-angle-left"></i> &nbsp;<span>{{ text_back }}</span></i>
+                                            </div>
+                                            <div class="custom-text-options">
+                                                <div class="form-group">
+                                                    <label>{{ text_edit_text_below }}</label>
+                                                    <textarea id="upload-text" type="text" required=""></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>{{ text_font_family }}</label>
+                                                    <select id="input-font" class="input">
+                                                        {% for key,font in fonts %} 
+                                                        <option value="{{ font['font_title'] }}" style="font-family:{{ font['font_title'] }}">{{ font['font_title'] }}</option>
+                                                        {% endfor %} 
+                                                    </select>
+                                                </div>
+                                                <div class="form-group width-50">
+                                                    <label>{{ text_font_size }}</label>
+                                                    <input type="number" value="26" id="font-size">
+                                                </div>
+                                                <div class="form-group width-50">
+                                                    <label>{{ text_line_height }}</label>
+                                                    <input type="number" value="26" id="line-height">
+                                                </div>
+                                                <div class="form-group">
+                                                    <button class="font-btn btn-align btn-active" id="alignleft">
+                                                        <i class="fa fa-align-left"></i>
+                                                    </button>
+                                                    <button class="font-btn btn-align" id="alignright">
+                                                        <i class="fa fa-align-right"></i>
+                                                    </button>
+                                                    <button class="font-btn btn-align" id="aligncenter">
+                                                        <i class="fa fa-align-center"></i>
+                                                    </button>
+                                                    <button class="font-btn btn-align" id="alignjustify">
+                                                        <i class="fa fa-align-justify"></i>
+                                                    </button>
+                                                    <button class="font-btn" id="textBold">
+                                                        <i class="fa fa-bold"></i>
+                                                    </button>
+                                                    <button class="font-btn" id="textItalic">
+                                                        <i class="fa fa-italic"></i>
+                                                    </button>										
+                                                    <button class="font-btn" id="textStrike">
+                                                        <i class="fa fa-strikethrough"></i>
+                                                    </button>										
+                                                    <button class="font-btn" id="textUnderline">
+                                                        <i class="fa fa-underline"></i>
+                                                    </button>										
+                                                </div>
+                                                {% if (settings['allow_text_curve']) %} 
+                                                <div class="kb-curved-pc-block">
+                                                    <div class="kb-curved-switch-bar">
+                                                        <label class="kb-curved-switch">
+                                                            <span class="kb-switch-text">{{ text_curved_text }}</span><!--22052018-->
+                                                            <div class="checker inputChecked" style="display: none;">
+                                                                <input name="text_curve" value="0" type="hidden">
+                                                                <span class="checked">
+                                                                    <div class="checker"><span><input name="text_curve" value="1" type="checkbox"></span></div>
+                                                                </span>
+                                                            </div>
+                                                            <span class="slider round"></span>					  
+                                                        </label>
+                                                    </div>
+                                                    <div class="kb-curved-text-tool" style="display: none;">
+                                                        <div class="form-group">
+                                                            <label>{{ text_radius }}</label>
+                                                            <input type="range" min="50" max="200" value="50" id="curved-text-radius" step="1">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>{{ text_spacing }}</label>
+                                                            <input type="range" min="5" max="50" value="1" id="curved-text-spacing" step="1">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endif %} 
+                                                <div class="form-group">
+                                                    <label>{{ text_font_color }}</label>
+                                                    <input name="text_color" id="text_color" type="text" class="jscolor" autocomplete="off" style="background-image: none; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>{{ text_font_bg_color }}</label>
+                                                    <p style="float: right;position: relative;padding-top: 5%;margin-right: 5%;color: #000;font-weight: 400;"><a href="javascript:void(0)" id="remove_font_bk">{{ text_remove }}</a></p>
+                                                    <input name="text_bgcolor" id="text_bgcolor" type="text" class="jscolor" autocomplete="off" style="background-image: none; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">
+                                                </div>
+                                                {% if (settings['allow_text_transparency']) %} 
+                                                <div class="form-group">
+                                                    <label>{{ text_transparency }}</label>
+                                                    <input type="range" min="0" max="1" value="1" id="text-opacity-slider" step="0.01">
+                                                </div>
+                                                {% endif %} 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                              
+
+                               
+                        </div>
+                        <div class="kb-pc-add-cart-block" style="padding: 25px 0;text-align: center;display:none">
+                            <div>
+                                <table class="table table-bordered stock-management-on">
+                                    <tbody>
+                                        <tr class="total_order">
+                                            <td  style="font-weight: 600;background: #f9f9f9;"> {{ text_price }}</td>
+                                            <td>
+                                                <span id="our_price_display" class="price cproduct_price" itemprop="price" content="25">{{ product_price_format }} </span>
+                                            </td>
+                                        </tr>
+                                        <tr class="total_order">
+                                            <td  style="font-weight: 600;background: #f9f9f9;"> {{ text_customization }}</td>
+                                            <td><span class="custom_price">-</span></td>
+                                        </tr>
+                                        <tr class="total_order total_calc">
+                                            <td  style="font-weight: 600;background: #f9f9f9;"> {{ text_total }}</td>
+                                            <td><span class="total_custom_price">{{ product_price_format }}</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                        <div class="canvas-image image-builder">
+                            <div class="fabric-container">
+                                <div class="canvas-container-outer" style="width: 420px;">
+                                    <div class="canvas-container" style="height:550px;">
+                                        {% for key,side in all_sides %} 
+                                        <div id="kb-canvas-pc-block" class="kb-canvas-layer-{{ key+1 }}" style="width: 96%; position: relative; background-color: rgb(255, 255, 255); display: block;">
+                                            <img id="customizeProductFacing" src="{{ image_dir~'image/'~side['side_image'] }}" style="display: none;">
+                                            <div id="drawingArea_{{ key+1 }}" style="background-color: rgb(255, 255, 255);">
+                                                <div class="canvas-container" style="width: 5300px; height: 630px; position: relative; user-select: none;">
+                                                    <canvas class="kbtcanvas lower-canvas" id="tcanvas_{{ key+1 }}" width="530" height="630" style="position: absolute; width: 800px; height: 1200px; left: 0px; top: 0px; user-select: none;">
+                                                        
+                                                    </canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %} 
+                                        <div id="kbaddqrcode" style="display: none;"></div>
+                                        <div id="upload-kbqrcode"></div>
+                                    </div>
+                                </div>
+                                <div class="kb-btn-group-vertical kb-btn-group-one">
+                                    <div class="kb-icon-vertical pull-right">
+                                        {% if (settings['show_download_png']) %} 
+                                        <ul style="list-style: none;padding-left: 0px">
+                                            <li>
+                                                <a href="javascript:void(0)" id="downloadKbPCObj" data-kb-tooltip="{{ text_download_as_png }}" class="kb-tooltip-left" tabindex="0"><span class="fa fa-cloud-download"></span></a>
+                                            </li>
+                                        </ul>
+                                        {% endif %} 
+                                        <ul  style="list-style: none;padding-left: 0px">
+                                            <li>
+                                                <a data-kb-tooltip="{{ text_undo }}" id="undoKbCanvas" class="kb-tooltip-left" href="javascript:void(0)" tabindex="0"><span class="fa fa-undo"></span></a>
+                                            </li>
+                                            <li>
+                                                <a data-kb-tooltip="{{ text_redo }}" id="redoKbCanvas" class="kb-tooltip-left" href="javascript:void(0)" tabindex="0"><span class="fa fa-repeat"></span></a>
+                                            </li>
+                                            <li>
+                                                <a data-kb-tooltip="{{ text_empty_canvas }}" id="emptyKbCanvas" class="kb-tooltip-left" href="javascript:void(0)" tabindex="0" style="color:red;"><span class="fa fa-trash"></span></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="kb-btn-group-vertical kb-btn-group-two">
+                                    <div class="kb-icon-vertical pull-right" style="float: left ! important;">
+                                        <ul  style="list-style: none;padding-left: 0px">
+                                            <li>
+                                                <a id="bring-to-front" data-kb-tooltip="{{ text_bring_to_front }}" class="kb-tooltip-right" href="javascript:void(0)" tabindex="0"><span class="fa fa-mail-reply"></span></a>
+                                            </li>
+                                            <li>
+                                                <a id="send-to-back" data-kb-tooltip="{{ text_send_to_back }}" class="kb-tooltip-right" href="javascript:void(0)" tabindex="0"><span class="fa fa-mail-forward"></span></a>
+                                            </li>
+                                            <li>
+                                                <a id="remove-selected" data-kb-tooltip="{{ text_delete_selected_item }}" class="kb-tooltip-right" href="javascript:void(0)" tabindex="0"><span class="fa fa-eraser"></span></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kb-canvas-sub-layers">
+                            <ul>
+                                {% for key,side in all_sides %} 
+                                <li>
+                                    <img alt="" class="" width="80px;" role="button" onclick="loadKbProductLayer($(this), '{{ key+1 }}');" tabindex="0" src="{{ image_dir~'image/'~side['side_image'] }}">
+                                </li>
+                                {% endfor %} 
+                            </ul>
+                        </div>
+                        <div style="    margin-top: 10px;margin-bottom: 10px;text-align: center;">
+                            <button type="submit" class="btn btn-primary kb-save-pc-customize-btn"><i class="fa fa-shopping-cart"></i> {{ text_save_customization }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input id="kbproduct_customization_add" name="customize_add" value="0" type="hidden" />
+<script src="catalog/view/javascript/kbproduct_customizer/js/velovalidation.js"></script>
+<script>
+velovalidation.setErrorLanguage({
+    empty_field: '{{ error_empty_field }}',
+    maxchar_field: '{{ error_maxchar_field }}', // Field can not be greater than {{ '{%' }}d} characters.
+    minchar_field: '{{ error_minchar_field }}',//Field can not be less than {{ '{%' }}d} character(s).
+    image_size: '{{ error_image_size }}',//Field can not be less than {{ '{%' }}d} character(s).
+});
+var kb_all_sides_name = JSON.parse('{{ all_sides_name }}');
+var kb_cp_resize = parseInt('{{ settings['resize_text'] }}');
+var kb_cp_rotate = parseInt('{{ settings['rotator_text'] }}');
+var kb_max_text_length = parseInt('{{ settings['max_text_length'] }}');
+var kb_min_text_length = parseInt('{{ settings['min_text_length'] }}');
+var kb_text_fixed_price = parseFloat('');
+var kb_qrcode_price = parseFloat('{{ settings['qrcode_price'] }}');
+var kb_design_fixed_price = parseFloat('');
+var kb_cusm_msg= '';
+var kb_cusm_msg1= '';
+var kb_file_upload_size= parseInt('{{ settings['upload_image_size'] }}');
+var kb_file_upload_price= parseFloat('');
+var priceWithDiscountsDisplay = parseFloat('');
+var kb_enable_cost_character = parseInt('');
+var currencyFormat = 1;
+var currencyRate = 1;
+var currencySign = '';
+var currencySign_left = '';
+var currencySign_right = '';
+var kb_warning_msg = '';
+var kb_cp_empty_cust_conf = '';
+var kb_cp_add_customization_display_msg = '';
+var kb_cp_remove_obj_msg = "{{ text_remove_obj_msg }}";
+var kb_include = "{{ text_incl }}";
+var kb_token = "{{ token }}";
+var currencyBlank = 0;
+var kb_side_object = "Side Object";
+var kb_cp_clear_mesg = '{{ text_canvas_clear_mesg }}';
+var kb_cancel_btn = '{{ text_cancel }}';
+var kb_ok_btn = '{{ text_ok }}';
+</script>
+<script type="text/javascript" src="catalog/view/javascript/kbproduct_customizer/js/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="catalog/view/javascript/kbproduct_customizer/js/jquery.ui.widget.min.js"></script>
+<script type="text/javascript" src="catalog/view/javascript/kbproduct_customizer/js/jquery.ui.mouse.min.js"></script>
+<script type="text/javascript" src="catalog/view/javascript/kbproduct_customizer/js/jquery.ui.draggable.min.js"></script>
+<script type="text/javascript" src="catalog/view/javascript/kbproduct_customizer/js/jquery.ui.resizable.min.js"></script>
+
+<link rel="stylesheet" href="catalog/view/javascript/kbproduct_customizer/css/jquery.ui.resizable.css" type="text/css" media="all" />
+<link rel="stylesheet" href="catalog/view/javascript/kbproduct_customizer/css/jquery.ui.theme.css" type="text/css" media="all" />
+<link rel="stylesheet" href="catalog/view/javascript/kbproduct_customizer/css/jquery.dialog.css" type="text/css" media="all" />
+<script src="catalog/view/javascript/kbproduct_customizer/js/jquery.dialog.js"></script>
+<script src="catalog/view/javascript/kbproduct_customizer/js/fabric.min.js"></script>
+<script src="catalog/view/javascript/kbproduct_customizer/js/fabric.js"></script>
+<script src="catalog/view/javascript/kbproduct_customizer/js/fabric.curvedText.js"></script>
+<script src="catalog/view/javascript/kbproduct_customizer/js/jquery.ui.touch-punch.js"></script>
+<script src="catalog/view/javascript/kbproduct_customizer/js/jscolor.js"></script>
+<script src="catalog/view/javascript/kbproduct_customizer/js/jquery.ui.rotatable.js"></script>
+<script src="catalog/view/javascript/kbproduct_customizer/js/raphael.min.js"></script>
+<script src="catalog/view/javascript/kbproduct_customizer/js/jquery.qrcode.min.js"></script>
+<script src="catalog/view/javascript/kbproduct_customizer/js/kb_front.js"></script>
+<script src="catalog/view/javascript/kbproduct_customizer/js/kb-fabric.js"></script>
